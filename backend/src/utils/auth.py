@@ -5,7 +5,6 @@ from datetime import datetime, timedelta
 from passlib.context import CryptContext
 from ..config import JWT_SECRET_KEY, JWT_ALGORITHM, JWT_EXPIRATION_DELTA
 from ..models.user import User
-from ..utils.db_operations import get_user_by_email
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -31,6 +30,13 @@ def decode_access_token(token: str):
         return None
     except jwt.InvalidTokenError:
         return None
+    
+
+async def get_user_by_email(token: str):
+    email = decode_access_token(token)
+    if email is None:
+        return None
+    return email
 
 async def get_current_user(token: str):
     email = decode_access_token(token)
@@ -40,3 +46,5 @@ async def get_current_user(token: str):
     if user is None:
         return None
     return user
+
+

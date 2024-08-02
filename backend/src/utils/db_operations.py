@@ -2,11 +2,12 @@
 
 import boto3
 from botocore.exceptions import ClientError
-from ..config import AWS_REGION, DYNAMODB_TABLE_USERS, DYNAMODB_TABLE_MESSAGES
+from ..config import AWS_REGION, DYNAMODB_TABLE_USERS, DYNAMODB_TABLE_MESSAGES, DYNAMODB_TABLE_ACCOUNTS,DYNAMODB_TABLE_CAMPAIGNS
 from ..models.user import User, UserCreate
 import uuid
 from ..models.message import Message, MessageCreate
 from ..models.campaign import Campaign, CampaignCreate
+from ..models.account import Account, AccountCreate, AccountResponse
 import time
 
 dynamodb = boto3.resource('dynamodb', region_name=AWS_REGION)
@@ -35,7 +36,7 @@ def create_account(account: AccountCreate) -> Account:
         print(f"Error creating account: {e}")
         raise
 
-def get_user_accounts(user_id: str) -> List[Account]:
+def get_user_accounts(user_id: str) -> list[Account]:
     try:
         response = accounts_table.query(
             IndexName='UserIdIndex',
@@ -46,6 +47,19 @@ def get_user_accounts(user_id: str) -> List[Account]:
     except ClientError as e:
         print(f"Error getting user accounts: {e}")
         return []
+    
+def get_user_campaigns(user_id: str) -> list[Account]:
+    try:
+        response = accounts_table.query(
+            IndexName='UserIdIndex',
+            KeyConditionExpression='user_id = :uid',
+            ExpressionAttributeValues={':uid': user_id}
+        )
+        return [Campaign(**item) for item in response['Items']]
+    except ClientError as e:
+        print(f"Error getting user campaign: {e}")
+        return []
+
 
 def create_campaign(campaign: CampaignCreate) -> Campaign:
     campaign_id = str(uuid.uuid4())
@@ -78,6 +92,30 @@ def update_user(user: User) -> User:
         print(f"Error updating user: {e}")
         return None
 
+
+def create_user(user: UserCreate) -> User:
+    user_id = str(uuid.uuid4())
+    timestamp = str(int(time.time()))
+    
+    item = {
+        'id': user_id,
+        'platform': user.platform,
+        user_id: user.id,
+        'recipient': user.recipient,
+        'content': user.content,
+        'status': 'queued',
+        'created_at': timestamp,
+        'updated_at': timestamp
+    }
+    
+    try:
+        messages_table.put_item(Item=item)
+        return Message(**item)
+    except ClientError as e:
+        print(f"Error creating message: {e}")
+        raise
+
+
 def create_message(message: MessageCreate) -> Message:
     message_id = str(uuid.uuid4())
     timestamp = str(int(time.time()))
@@ -100,7 +138,7 @@ def create_message(message: MessageCreate) -> Message:
         print(f"Error creating message: {e}")
         raise
 
-def get_messages_by_user(user_id: str, status: Optional[str] = None) -> List[Message]:
+def get_messages_by_user(user_id: str, status: list[str] = None) -> list[Message]:
     try:
         if status:
             response = messages_table.query(

@@ -1,3 +1,5 @@
-playwright
+chalice
 boto3
-pytest
+pyjwt
+pydantic
+playwright
