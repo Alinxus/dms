@@ -2,6 +2,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import CampaignOverview from '../components/dashboard/CampaignOverview';
+import AccountStatus from '../components/dashboard/AccountStatus';
+import RecentActivity from '../components/dashboard/RecentActivity';
+
 
 function Dashboard() {
   const [accounts, setAccounts] = useState([]);
@@ -68,6 +72,11 @@ function Dashboard() {
             Create Campaign
           </Link>
         </div>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <CampaignOverview />
+        <AccountStatus />
+        <RecentActivity />
       </div>
     </div>
   );

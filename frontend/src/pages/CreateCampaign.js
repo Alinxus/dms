@@ -1,104 +1,88 @@
-// src/pages/CreateCampaign.js
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+// src/components/campaigns/CampaignForm.jsx
+import React, { useState } from 'react';
+import { useCampaigns } from '../hooks/useCampaigns';
 
-function CreateCampaign() {
-  const [name, setName] = useState('');
-  const [messageTemplate, setMessageTemplate] = useState('');
-  const [selectedAccounts, setSelectedAccounts] = useState([]);
-  const [accounts, setAccounts] = useState([]);
-  const [error, setError] = useState('');
-  const navigate = useNavigate();
+const CreateCampaign = ({ initialData, onSuccess }) => {
+  const [formData, setFormData] = useState(initialData || {
+    name: '',
+    message: '',
+  });
+  const [csvFile, setCsvFile] = useState(null);
 
-  useEffect(() => {
-    fetchAccounts();
-  }, []);
-
-  const fetchAccounts = async () => {
-    try {
-      const response = await axios.get('/api/accounts');
-      setAccounts(response.data.accounts);
-    } catch (error) {
-      console.error('Error fetching accounts:', error);
-    }
-  };
+  const { addCampaign, editCampaign } = useCampaigns();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
     try {
-      await axios.post('/api/campaigns', {
-        name,
-        message_template: messageTemplate,
-        account_ids: selectedAccounts,
-      });
-      navigate('/dashboard');
+      const formDataToSend = new FormData();
+      formDataToSend.append('name', formData.name);
+      formDataToSend.append('message', formData.message);
+      if (csvFile) {
+        formDataToSend.append('leads', csvFile);
+      }
+
+      if (initialData) {
+        await editCampaign(initialData.id, formDataToSend);
+      } else {
+        await addCampaign(formDataToSend);
+      }
+      onSuccess();
     } catch (error) {
-      setError('Failed to create campaign. Please try again.');
+      console.error('Failed to save campaign:', error);
     }
   };
 
-  const handleAccountSelection = (accountId) => {
-    setSelectedAccounts((prevSelected) => {
-      if (prevSelected.includes(accountId)) {
-        return prevSelected.filter((id) => id !== accountId);
-      } else {
-        return [...prevSelected, accountId];
-      }
-    });
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleFileChange = (e) => {
+    setCsvFile(e.target.files[0]);
   };
 
   return (
-    <div className="max-w-2xl mx-auto">
-      <h2 className="text-2xl font-bold mb-4">Create Campaign</h2>
-      {error && <p className="text-red-500 mb-4">{error}</p>}
-      <form onSubmit={handleSubmit}>
-        <div className="mb-4">
-          <label htmlFor="name" className="block mb-2">Campaign Name</label>
-          <input
-            type="text"
-            id="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="w-full px-3 py-2 border rounded"
-            required
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="messageTemplate" className="block mb-2">Message Template</label>
-          <textarea
-            id="messageTemplate"
-            value={messageTemplate}
-            onChange={(e) => setMessageTemplate(e.target.value)}
-            className="w-full px-3 py-2 border rounded"
-            rows="4"
-            required
-          ></textarea>
-          <p className="text-sm text-gray-600 mt-1">Use {'{username}'} to personalize the message.</p>
-        </div>
-        <div className="mb-4">
-          <label className="block mb-2">Select Accounts</label>
-          <div className="space-y-2">
-            {accounts.map((account) => (
-              <label key={account.id} className="flex items-center">
-                <input
-                  type="checkbox"
-                  checked={selectedAccounts.includes(account.id)}
-                  onChange={() => handleAccountSelection(account.id)}
-                  className="mr-2"
-                />
-                {account.platform}: {account.username}
-              </label>
-            ))}
-          </div>
-        </div>
-        <button type="submit" className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
-          Create Campaign
-        </button>
-      </form>
-    </div>
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div>
+        <label htmlFor="name" className="block text-sm font-medium text-gray-700">Campaign Name</label>
+        <input
+          type="text"
+          name="name"
+          id="name"
+          value={formData.name}
+          onChange={handleChange}
+          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+        />
+      </div>
+      <div>
+        <label htmlFor="message" className="block text-sm font-medium text-gray-700">Message</label>
+        <textarea
+          name="message"
+          id="message"
+          value={formData.message}
+          onChange={handleChange}
+          rows="3"
+          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+        ></textarea>
+      </div>
+      <div>
+        <label htmlFor="leads" className="block text-sm font-medium text-gray-700">Upload Leads (CSV)</label>
+        <input
+          type="file"
+          name="leads"
+          id="leads"
+          accept=".csv"
+          onChange={handleFileChange}
+          className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+        />
+      </div>
+      <button
+        type="submit"
+        className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+      >
+        {initialData ? 'Update Campaign' : 'Create Campaign'}
+      </button>
+    </form>
   );
-}
+};
 
 export default CreateCampaign;
