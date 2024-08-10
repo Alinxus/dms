@@ -1,6 +1,6 @@
 # backend/src/automation/linkedin.py
 
-from .base_automation import BaseAutomation
+from .base import BaseAutomation
 
 class LinkedInAutomation(BaseAutomation):
     async def setup(self):
