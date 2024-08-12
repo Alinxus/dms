@@ -35,7 +35,7 @@ const sendInstagramDM = async (
     recipient: string,
     message: string
   ) => {
-    const browser = await chromium.launch({ headless: false });
+    const browser = await chromium.launch({ headless: true });
     const page = await browser.newPage();
   
     try {
@@ -98,7 +98,7 @@ const sendInstagramDM = async (
     recipient: string,
     message: string
   ) => {
-    const browser = await chromium.launch({ headless: true });
+    const browser = await chromium.launch({ headless: false });
     const page = await browser.newPage();
   
     try {
