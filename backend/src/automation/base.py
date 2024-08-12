@@ -34,6 +34,6 @@ class BaseAutomation:
 
     async def send_dm(self, username, message):
         raise NotImplementedError("This method should be implemented by subclasses")
-        @abstractmethod
+    
     def login(self, username: str, password: str):
         pass

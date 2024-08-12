@@ -1,176 +1,92 @@
 # backend/src/utils/db_operations.py
 
-import boto3
-from botocore.exceptions import ClientError
-from ..config import AWS_REGION, DYNAMODB_TABLE_USERS, DYNAMODB_TABLE_MESSAGES, DYNAMODB_TABLE_ACCOUNTS,DYNAMODB_TABLE_CAMPAIGNS
-from ..models.user import User, UserCreate
-import uuid
-from ..models.message import Message, MessageCreate
-from ..models.campaign import Campaign, CampaignCreate
-from ..models.account import Account, AccountCreate, AccountResponse
-import time
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import Session
+from ..models.user import UserModel, UserCreate
+from ..config import DATABASE_URL
+import bcrypt
+from ..models.campaign import CampaignModel, CampaignCreate
+from ..models.message import MessageModel, MessageCreate
 
-dynamodb = boto3.resource('dynamodb', region_name=AWS_REGION)
-users_table = dynamodb.Table(DYNAMODB_TABLE_USERS)
-accounts_table = dynamodb.Table(DYNAMODB_TABLE_ACCOUNTS)
-messages_table = dynamodb.Table(DYNAMODB_TABLE_MESSAGES)
-campaigns_table = dynamodb.Table(DYNAMODB_TABLE_CAMPAIGNS)
 
-def create_account(account: AccountCreate) -> Account:
-    account_id = str(uuid.uuid4())
-    timestamp = str(int(time.time()))
-    
-    item = {
-        'id': account_id,
-        'user_id': account.user_id,
-        'platform': account.platform,
-        'username': account.username,
-        'created_at': timestamp,
-        'updated_at': timestamp
-    }
-    
+engine = create_engine(DATABASE_URL)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+
+def create_message(db: Session, message: MessageCreate) -> MessageModel:
+    db_message = MessageModel(**message.dict())
+    db.add(db_message)
+    db.commit()
+    db.refresh(db_message)
+    return db_message
+
+def get_messages_by_user(db: Session, user_id: int, status: List[str] = None) -> List[MessageModel]:
+    query = db.query(MessageModel).filter(MessageModel.user_id == user_id)
+    if status:
+        query = query.filter(MessageModel.status.in_(status))
+    return query.all()
+
+def update_message_status(db: Session, message_id: int, new_status: str) -> MessageModel:
+    db_message = db.query(MessageModel).filter(MessageModel.id == message_id).first()
+    if db_message:
+        db_message.status = new_status
+        db.commit()
+        db.refresh(db_message)
+    return db_message
+def create_campaign(db: Session, campaign: CampaignCreate) -> CampaignModel:
+    db_campaign = CampaignModel(**campaign.dict())
+    db.add(db_campaign)
+    db.commit()
+    db.refresh(db_campaign)
+    return db_campaign
+
+def get_user_campaigns(db: Session, user_id: int) -> List[CampaignModel]:
+    return db.query(CampaignModel).filter(CampaignModel.user_id == user_id).all()
+
+def update_campaign(db: Session, campaign_id: int, updated_data: dict) -> CampaignModel:
+    db_campaign = db.query(CampaignModel).filter(CampaignModel.id == campaign_id).first()
+    if db_campaign:
+        for key, value in updated_data.items():
+            setattr(db_campaign, key, value)
+        db.commit()
+        db.refresh(db_campaign)
+    return db_campaign
+
+def get_db():
+    db = SessionLocal()
     try:
-        accounts_table.put_item(Item=item)
-        return Account(**item)
-    except ClientError as e:
-        print(f"Error creating account: {e}")
-        raise
+        yield db
+    finally:
+        db.close()
 
-def get_user_accounts(user_id: str) -> list[Account]:
-    try:
-        response = accounts_table.query(
-            IndexName='UserIdIndex',
-            KeyConditionExpression='user_id = :uid',
-            ExpressionAttributeValues={':uid': user_id}
-        )
-        return [Account(**item) for item in response['Items']]
-    except ClientError as e:
-        print(f"Error getting user accounts: {e}")
-        return []
-    
-def get_user_campaigns(user_id: str) -> list[Account]:
-    try:
-        response = accounts_table.query(
-            IndexName='UserIdIndex',
-            KeyConditionExpression='user_id = :uid',
-            ExpressionAttributeValues={':uid': user_id}
-        )
-        return [Campaign(**item) for item in response['Items']]
-    except ClientError as e:
-        print(f"Error getting user campaign: {e}")
-        return []
+def create_user(user: UserCreate) -> UserModel:
+    db = next(get_db())
+    hashed_password = bcrypt.hashpw(user.password.encode('utf-8'), bcrypt.gensalt())
+    db_user = UserModel(
+        email=user.email,
+        password_hash=hashed_password.decode('utf-8'),
+        full_name=user.full_name
+    )
+    db.add(db_user)
+    db.commit()
+    db.refresh(db_user)
+    return db_user
 
+def get_user_by_email(email: str) -> UserModel:
+    db = next(get_db())
+    return db.query(UserModel).filter(UserModel.email == email).first()
 
-def create_campaign(campaign: CampaignCreate) -> Campaign:
-    campaign_id = str(uuid.uuid4())
-    timestamp = str(int(time.time()))
-    
-    item = {
-        'id': campaign_id,
-        'user_id': campaign.user_id,
-        'name': campaign.name,
-        'message_template': campaign.message_template,
-        'status': 'created',
-        'created_at': timestamp,
-        'updated_at': timestamp
-    }
-    
-    try:
-        campaigns_table.put_item(Item=item)
-        return Campaign(**item)
-    except ClientError as e:
-        print(f"Error creating campaign: {e}")
-        raise
-def update_user(user: User) -> User:
-    timestamp = str(int(time.time()))
-    user.updated_at = timestamp
-    
-    try:
-        users_table.put_item(Item=user.dict())
-        return user
-    except ClientError as e:
-        print(f"Error updating user: {e}")
-        return None
+def update_user(user: UserModel) -> UserModel:
+    db = next(get_db())
+    db.add(user)
+    db.commit()
+    db.refresh(user)
+    return user
 
+def get_user_accounts(user_id: int) -> list:
+    db = next(get_db())
+    user = db.query(UserModel).filter(UserModel.id == user_id).first()
+    return user.connected_accounts if user else []
 
-def create_user(user: UserCreate) -> User:
-    user_id = str(uuid.uuid4())
-    timestamp = str(int(time.time()))
-    
-    item = {
-        'id': user_id,
-        'platform': user.platform,
-        user_id: user.id,
-        'recipient': user.recipient,
-        'content': user.content,
-        'status': 'queued',
-        'created_at': timestamp,
-        'updated_at': timestamp
-    }
-    
-    try:
-        messages_table.put_item(Item=item)
-        return Message(**item)
-    except ClientError as e:
-        print(f"Error creating message: {e}")
-        raise
-
-
-def create_message(message: MessageCreate) -> Message:
-    message_id = str(uuid.uuid4())
-    timestamp = str(int(time.time()))
-    
-    item = {
-        'id': message_id,
-        'user_id': message.user_id,
-        'platform': message.platform,
-        'recipient': message.recipient,
-        'content': message.content,
-        'status': 'queued',
-        'created_at': timestamp,
-        'updated_at': timestamp
-    }
-    
-    try:
-        messages_table.put_item(Item=item)
-        return Message(**item)
-    except ClientError as e:
-        print(f"Error creating message: {e}")
-        raise
-
-def get_messages_by_user(user_id: str, status: list[str] = None) -> list[Message]:
-    try:
-        if status:
-            response = messages_table.query(
-                IndexName='UserStatusIndex',
-                KeyConditionExpression='user_id = :uid AND #status = :status',
-                ExpressionAttributeNames={'#status': 'status'},
-                ExpressionAttributeValues={':uid': user_id, ':status': status}
-            )
-        else:
-            response = messages_table.query(
-                KeyConditionExpression='user_id = :uid',
-                ExpressionAttributeValues={':uid': user_id}
-            )
-        
-        return [Message(**item) for item in response['Items']]
-    except ClientError as e:
-        print(f"Error getting messages: {e}")
-        return []
-
-def update_message_status(message_id: str, new_status: str) -> Message:
-    timestamp = str(int(time.time()))
-    
-    try:
-        response = messages_table.update_item(
-            Key={'id': message_id},
-            UpdateExpression='SET #status = :status, updated_at = :updated_at',
-            ExpressionAttributeNames={'#status': 'status'},
-            ExpressionAttributeValues={':status': new_status, ':updated_at': timestamp},
-            ReturnValues='ALL_NEW'
-        )
-        return Message(**response['Attributes'])
-    except ClientError as e:
-        print(f"Error updating message status: {e}")
-        return None
-
+# You'll need to create similar functions for campaigns, messages, etc.
