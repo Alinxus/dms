@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "google-auth-library": "^9.13.0",
+    "google-spreadsheet": "^4.1.2",
+    "papaparse": "^5.4.1",
+    "playwright": "^1.46.0",
+    "random": "^4.1.0"
+  }
+}
