@@ -37,7 +37,7 @@ const SendDMPage = () => {
       const result = await response.json();
       setStatus(result.status || result.error);
     } catch (error) {
-      setStatus('Failed to send message. Error: ' + error.message);
+      setStatus('Failed to send message. Error: ' + error);
     }
   };
 
