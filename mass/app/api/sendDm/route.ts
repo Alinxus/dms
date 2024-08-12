@@ -35,7 +35,7 @@ const sendInstagramDM = async (
     recipient: string,
     message: string
   ) => {
-    const browser = await chromium.launch({ headless: true });
+    const browser = await chromium.launch({ headless: false });
     const page = await browser.newPage();
   
     try {
@@ -90,4 +90,45 @@ const sendInstagramDM = async (
       await browser.close();
     }
   };
+  
+
+  const sendTwitterDM = async (
+    username: string,
+    password: string,
+    recipient: string,
+    message: string
+  ) => {
+    const browser = await chromium.launch({ headless: true });
+    const page = await browser.newPage();
+  
+    try {
+      await page.goto('https://twitter.com/login', { waitUntil: 'networkidle' });
+  
+      // Wait for and fill the username field
+      await page.waitForSelector('input[name="session[username_or_email]"]', { timeout: 60000 });
+      await page.fill('input[name="session[username_or_email]"]', username);
+  
+      // Wait for and fill the password field
+      await page.waitForSelector('input[name="session[password]"]', { timeout: 60000 });
+      await page.fill('input[name="session[password]"]', password);
+      
+      // Click the login button
+      await page.waitForSelector('div[data-testid="LoginForm_Login_Button"]', { timeout: 60000 });
+      await page.click('div[data-testid="LoginForm_Login_Button"]');
+      
+      // Wait for the messages page and send the DM
+      await page.waitForTimeout(10000); // Wait for page load
+      await page.goto(`https://twitter.com/messages/compose?recipient_id=${recipient}`);
+      await page.waitForSelector('div[aria-label="Message Text"]', { timeout: 60000 });
+      await page.fill('div[aria-label="Message Text"]', message);
+      await page.click('div[data-testid="dmComposerSendButton"]');
+  
+    } catch (error) {
+      console.error('Error sending Twitter DM:', error);
+      await page.screenshot({ path: 'twitter_error_screenshot.png' }); // Take a screenshot for debugging
+    } finally {
+      await browser.close();
+    }
+  };
+  
   
