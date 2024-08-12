@@ -1,18 +1,14 @@
+// app/accounts/page.tsx
 'use client'
 
 import { useState, useEffect } from 'react'
 import { useUser } from '@clerk/nextjs'
-
-type Account = {
-  id: string
-  platform: string
-  username: string
-}
+import { createAccount, getAccounts } from './accountActions'
 
 export default function Accounts() {
   const { isSignedIn, user } = useUser()
-  const [accounts, setAccounts] = useState<Account[]>([])
-  const [platform, setPlatform] = useState('instagram')
+  const [accounts, setAccounts] = useState([])
+  const [platform, setPlatform] = useState('twitter')
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
@@ -23,16 +19,9 @@ export default function Accounts() {
   }, [isSignedIn, user])
 
   const fetchAccounts = async () => {
-    try {
-      const response = await fetch(`/api/account?userId=${user?.id}`)
-      if (response.ok) {
-        const data = await response.json()
-        setAccounts(data.accounts)
-      } else {
-        throw new Error('Failed to fetch accounts')
-      }
-    } catch (error) {
-      console.error('Error fetching accounts:', error)
+    if (user) {
+      const fetchedAccounts = await getAccounts(user.id as any)
+      setAccounts(fetchedAccounts)
     }
   }
 
@@ -44,28 +33,17 @@ export default function Accounts() {
     }
 
     try {
-      const response = await fetch('/api/account', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          userId: user.id,
-          platform,
-          username,
-          password,
-        }),
+      await createAccount({
+        userId: user.id,
+        platform,
+        username,
+        password,
       })
-
-      if (response.ok) {
-        alert('Account added successfully')
-        setPlatform('instagram')
-        setUsername('')
-        setPassword('')
-        fetchAccounts()
-      } else {
-        throw new Error('Failed to add account')
-      }
+      alert('Account added successfully')
+      setPlatform('twitter')
+      setUsername('')
+      setPassword('')
+      fetchAccounts()
     } catch (error) {
       console.error('Error adding account:', error)
       alert('Failed to add account')
@@ -88,9 +66,8 @@ export default function Accounts() {
             onChange={(e) => setPlatform(e.target.value)}
             className="w-full p-2 border rounded"
           >
-            <option value="instagram">Instagram</option>
             <option value="twitter">Twitter</option>
-            <option value="linkedin">LinkedIn</option>
+            <option value="instagram">Instagram</option>
           </select>
         </div>
         <div>
@@ -122,15 +99,9 @@ export default function Accounts() {
 
       <h2 className="text-2xl font-bold mb-4">Your Accounts</h2>
       <ul className="space-y-2">
-        {accounts.map((account) => (
+        {accounts.map((account: any) => (
           <li key={account.id} className="flex justify-between items-center bg-gray-100 p-4 rounded">
             <span>{account.username} ({account.platform})</span>
-            <button 
-              onClick={() => {/* Implement delete functionality */}}
-              className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
-            >
-              Delete
-            </button>
           </li>
         ))}
       </ul>

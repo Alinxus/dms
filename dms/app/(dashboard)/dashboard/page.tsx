@@ -33,6 +33,36 @@ type CampaignPerformance = {
   data: { date: string; messagesSent: number }[]
 }
 
+type Account = {
+    id: string
+      platform: string
+        username: string
+        }
+
+        type Session = {
+          id: string
+            accountId: string
+              userAgent: string
+                lastActive: string
+                }
+
+                type Campaign = {
+                  id: string
+                    name: string
+                      status: string
+                        messagesSent: number
+                          messagesQueued: number
+                          }
+
+                          type RecentMessage = {
+                            id: string
+                              campaignName: string
+                                recipient: string
+                                  status: string
+                                    sentAt: string
+                                    }
+
+
 export default function Dashboard() {
   const { isSignedIn, user } = useUser()
   const [accounts, setAccounts] = useState<Account[]>([])
@@ -94,9 +124,9 @@ export default function Dashboard() {
     }
   }
 
-  if (!isSignedIn) {
-    return <h1 className="text-3xl font-bold mb-4">Please sign in to view your dashboard</h1>
-  }
+  // if (!isSignedIn) {
+  //   return <h1 className="text-3xl font-bold mb-4">Please sign in to view your dashboard</h1>
+  // }
 
   return (
     <div className="space-y-8">

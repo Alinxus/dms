@@ -8,7 +8,7 @@ const prisma = new PrismaClient()
 const RATE_LIMIT = 60 * 1000 // 1 minute in milliseconds
 
 export async function addToQueue(userId: string, platform: string, username: string, recipient: string, message: string) {
-  return prisma.queuedMessage.create({
+  return prisma.message.create({
     data: {
       userId,
       platform,
@@ -20,7 +20,7 @@ export async function addToQueue(userId: string, platform: string, username: str
 }
 
 export async function processQueue() {
-  const pendingMessages = await prisma.queuedMessage.findMany({
+  const pendingMessages = await prisma.message.findMany({
     where: { status: 'pending' },
     orderBy: { createdAt: 'asc' },
   })
@@ -41,7 +41,7 @@ export async function processQueue() {
           throw new Error(`Unsupported platform: ${message.platform}`)
       }
 
-      await prisma.queuedMessage.update({
+      await prisma.message.update({
         where: { id: message.id },
         data: { status: 'sent' },
       })
@@ -49,7 +49,7 @@ export async function processQueue() {
       console.log(`Message ${message.id} sent successfully`)
     } catch (error) {
       console.error(`Failed to send message ${message.id}:`, error)
-      await prisma.queuedMessage.update({
+      await prisma.message.update({
         where: { id: message.id },
         data: { status: 'failed' },
       })
