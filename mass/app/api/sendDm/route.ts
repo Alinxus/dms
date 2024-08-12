@@ -28,70 +28,88 @@ export async function POST(req: NextRequest) {
   }
 }
 
+
 // Your existing sendTwitterDM and sendInstagramDM functions here...
 const sendInstagramDM = async (
-    username: string,
-    password: string,
-    recipient: string,
-    message: string
-  ) => {
-    const browser = await chromium.launch({ headless: true });
-    const page = await browser.newPage();
-  
-    try {
-      // Go to Instagram and log in
-      await page.goto('https://www.instagram.com/', { waitUntil: 'networkidle' });
-      
-      // Fill in username and password
-      await page.fill('input[name="username"]', username);
-      await page.fill('input[name="password"]', password);
-      await page.click('button[type="submit"]');
-      
-      // Wait for login to complete and check if login was successful
-      await page.waitForNavigation({ waitUntil: 'networkidle', timeout: 60000 });
-      
-      // Take a screenshot after login to verify
-      await page.screenshot({ path: 'login_check.png' });
-  
-      const isLoginSuccessful = await page.isVisible('nav[role="navigation"]');
-      if (!isLoginSuccessful) {
-        throw new Error('Login failed. Please check your credentials.');
-      }
-  
-      // Navigate to Direct Messages
-      await page.goto('https://www.instagram.com/direct/inbox/', { waitUntil: 'networkidle' });
-      await page.screenshot({ path: 'dm_page_check.png' });
-  
-      // Click to start a new message
-      await page.click('svg[aria-label="New Message"]'); // This selector might need to be updated
-      await page.waitForSelector('input[placeholder="Search..."]', { timeout: 60000 });
-  
-      // Search for the recipient
-      await page.fill('input[placeholder="Search..."]', recipient);
-      await page.waitForTimeout(3000); // Wait for the search results to load
-      await page.keyboard.press('Enter'); // Select the first result
-      await page.waitForTimeout(3000);
-      await page.keyboard.press('Enter'); // Confirm the selection
-  
-      // Type the message
-      await page.waitForSelector('textarea[placeholder="Message..."]', { timeout: 60000 });
-      await page.fill('textarea[placeholder="Message..."]', message);
-  
-      // Send the message
-      await page.click('button[type="button"]:has-text("Send")');
-      
-      // Take a final screenshot to confirm the message was sent
-      await page.screenshot({ path: 'message_sent_check.png' });
-  
-    } catch (error) {
-      console.error('Error sending Instagram DM:', error);
-      await page.screenshot({ path: 'instagram_error_screenshot.png' }); // Take a screenshot for debugging
-    } finally {
-      await browser.close();
-    }
-  };
-  
+  username: string,
+  password: string,
+  recipient: string,
+  message: string
+) => {
+  const browser = await chromium.launch({ headless: false }); // Set to false for debugging
+  const page = await browser.newPage();
 
+  try {
+    console.log('Navigating to Instagram...');
+    await page.goto('https://www.instagram.com/', { waitUntil: 'networkidle' });
+    
+    console.log('Filling login form...');
+    await page.fill('input[name="username"]', username);
+    await page.fill('input[name="password"]', password);
+    
+    console.log('Submitting login form...');
+    await page.click('button[type="submit"]');
+    
+    console.log('Waiting for login to complete...');
+    await page.waitForNavigation({ waitUntil: 'networkidle', timeout: 60000 });
+    
+    console.log('Checking if login was successful...');
+    await page.screenshot({ path: 'login_check.png' });
+    const isLoginSuccessful = await page.isVisible('nav[role="navigation"]');
+    if (!isLoginSuccessful) {
+      throw new Error('Login failed. Please check your credentials.');
+    }
+
+    console.log('Navigating to Direct Messages...');
+    await page.goto('https://www.instagram.com/direct/inbox/', { waitUntil: 'networkidle' });
+    await page.screenshot({ path: 'dm_page_check.png' });
+
+    console.log('Starting a new message...');
+    await page.click('svg[aria-label="New message"]');
+    await page.waitForSelector('input[placeholder="Search..."]', { timeout: 60000 });
+
+    console.log('Searching for recipient...');
+    await page.fill('input[placeholder="Search..."]', recipient);
+    await page.waitForTimeout(3000);
+    
+    console.log('Selecting recipient...');
+    const recipientOption = await page.$(`.x1i10hfl[href="/${recipient}/"]`);
+    if (!recipientOption) {
+      throw new Error(`Recipient ${recipient} not found.`);
+    }
+    await recipientOption.click();
+    
+    console.log('Clicking Next...');
+    await page.click('div[role="button"]:has-text("Next")');
+
+    console.log('Typing message...');
+    await page.waitForSelector('textarea[placeholder="Message..."]', { timeout: 60000 });
+    await page.fill('textarea[placeholder="Message..."]', message);
+
+    console.log('Sending message...');
+    await page.click('button[type="submit"]');
+    
+    console.log('Waiting for message to be sent...');
+    await page.waitForTimeout(5000);
+    
+    console.log('Verifying message was sent...');
+    const sentMessage = await page.$(`text="${message}"`);
+    if (!sentMessage) {
+      throw new Error('Message not found in the chat. It may not have been sent.');
+    }
+    
+    console.log('Message sent successfully!');
+    await page.screenshot({ path: 'message_sent_check.png' });
+
+  } catch (error) {
+    console.error('Error sending Instagram DM:', error);
+    await page.screenshot({ path: 'instagram_error_screenshot.png' });
+    throw error;
+  } finally {
+    await browser.close();
+  }
+};
+  
   const sendTwitterDM = async (
     username: string,
     password: string,
