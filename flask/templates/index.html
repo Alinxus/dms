@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram DM Sender</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto p-4">
+        <h1 class="text-2xl font-bold mb-4">Instagram DM Sender</h1>
+        <form id="dmForm" class="space-y-4">
+            <div>
+                <label for="instagram_username" class="block mb-2">Instagram Username:</label>
+                <input type="text" id="instagram_username" class="w-full p-2 border rounded" required>
+            </div>
+            <div>
+                <label for="instagram_password" class="block mb-2">Instagram Password:</label>
+                <input type="password" id="instagram_password" class="w-full p-2 border rounded" required>
+            </div>
+            <div>
+                <label for="usernames" class="block mb-2">Usernames to message (one per line):</label>
+                <textarea id="usernames" rows="5" class="w-full p-2 border rounded" required></textarea>
+            </div>
+            <div>
+                <label for="messages" class="block mb-2">Messages (one per line):</label>
+                <textarea id="messages" rows="5" class="w-full p-2 border rounded" required></textarea>
+            </div>
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Send Messages</button>
+        </form>
+        <div id="results" class="mt-4"></div>
+    </div>
+
+    <script>
+        document.getElementById('dmForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const instagram_username = document.getElementById('instagram_username').value;
+            const instagram_password = document.getElementById('instagram_password').value;
+            const usernames = document.getElementById('usernames').value.split('\n').filter(u => u.trim());
+            const messages = document.getElementById('messages').value.split('\n').filter(m => m.trim());
+            
+            const response = await fetch('/send_messages', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ instagram_username, instagram_password, usernames, messages }),
+            });
+
+            const results = await response.json();
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '<h2 class="text-xl font-bold mb-2">Results:</h2>';
+            results.forEach(result => {
+                const color = result.status === 'sent' ? 'text-green-600' : 'text-red-600';
+                resultsDiv.innerHTML += `<p class="${color}">${result.username}: ${result.status}${result.error ? ` - ${result.error}` : ''}</p>`;
+            });
+        });
+    </script>
+</body>
+</html>
