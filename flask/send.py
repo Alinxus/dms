@@ -1,187 +1,206 @@
 import asyncio
-from playwright.async_api import async_playwright
+from playwright.async_api import async_playwright, TimeoutError
 import random
 import json
-from playwright.async_api import TimeoutError as PlaywrightTimeoutError
-import traceback
+import csv
+import warnings
+import os
+import sys
+import logging
+from datetime import datetime
 
-async def login(page, username, password, max_retries=3):
-    for attempt in range(max_retries):
-        try:
-            print(f"Login attempt {attempt + 1}")
-            await page.goto('https://www.instagram.com/')
-            await page.wait_for_load_state('networkidle')
+warnings.filterwarnings("ignore")
 
-            print("Loaded Instagram login page")
+# Set up logging
+logging.basicConfig(filename='instagram_dm_sender.log', level=logging.INFO,
+                    format='%(asctime)s - %(levelname)s - %(message)s')
 
-            await handle_cookie_consent(page)
+async def take_screenshot(page, filename):
+    os.makedirs('screenshots', exist_ok=True)
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    screenshot_path = f"screenshots/{filename}_{timestamp}.png"
+    await page.screenshot(path=screenshot_path, full_page=True)
+    logging.info(f"Screenshot saved: {screenshot_path}")
 
-            print("Filling username")
-            await page.fill('input[name="username"]', username)
-            print("Filling password")
-            await page.fill('input[name="password"]', password)
-
-            print("Attempting to click submit button")
-            submit_button_selectors = [
-                'button[type="submit"]',
-                'button:has-text("Log In")',
-                'button:has-text("Sign In")',
-                '[data-testid="login-button"]'
-            ]
-
-            for selector in submit_button_selectors:
-                try:
-                    await page.click(selector, timeout=10000)
-                    print(f"Clicked submit button with selector: {selector}")
-                    break
-                except PlaywrightTimeoutError:
-                    print(f"Failed to click submit button with selector: {selector}")
-                    continue
-
-            print("Waiting for navigation after login")
-            await page.wait_for_load_state('networkidle', timeout=60000)
-
-            print("Checking if login was successful")
-            is_logged_in = await page.is_visible('a[href="/direct/inbox/"]', timeout=10000)
-            if is_logged_in:
-                print("Login successful")
-                return True
-            else:
-                print("Login unsuccessful, checking for error messages")
-                error_message = await page.inner_text('div[role="alert"]', timeout=5000)
-                print(f"Login error: {error_message}")
-
-        except Exception as e:
-            print(f"An error occurred during login: {str(e)}")
-
-        if attempt < max_retries - 1:
-            print(f"Retrying login in 5 seconds...")
-            await asyncio.sleep(5)
-        else:
-            print("Max login attempts reached")
-
-    return False
-
-async def handle_cookie_consent(page):
+async def validate_login(page):
     try:
-        print("Checking for cookie consent dialog")
-        await page.wait_for_selector('div[role="dialog"]', timeout=5000)
+        # Navigate to Instagram homepage
+        await page.goto("https://www.instagram.com/", timeout=30000)
+        await page.wait_for_load_state('networkidle')
         
-        consent_button_selectors = [
-            'button[tabindex="0"]:has-text("Allow")',
-            'button:has-text("Accept All")',
-            'button:has-text("Allow essential and optional cookies")'
-        ]
-        
-        for selector in consent_button_selectors:
-            try:
-                await page.click(selector, timeout=5000)
-                print(f"Clicked cookie consent button with selector: {selector}")
-                return
-            except PlaywrightTimeoutError:
-                print(f"Failed to click {selector}")
-
-        print("Attempting to click cookie consent button using JavaScript")
-        await page.evaluate('''
-            () => {
-                const buttons = Array.from(document.querySelectorAll('button'));
-                const allowButton = buttons.find(button => 
-                    button.textContent.toLowerCase().includes('allow') || 
-                    button.textContent.toLowerCase().includes('accept')
-                );
-                if (allowButton) allowButton.click();
-            }
-        ''')
-    except PlaywrightTimeoutError:
-        print("No cookie consent dialog found")
+        # Check for user-specific elements that indicate a successful login
+        user_element = await page.query_selector('svg[aria-label="Home"]')
+        if user_element:
+            logging.info("Login validated successfully.")
+            return True
+        else:
+            logging.error("Login validation failed. User-specific elements not found.")
+            await take_screenshot(page, "login_validation_failed")
+            return False
     except Exception as e:
-        print(f"Error handling cookie consent: {str(e)}")
+        logging.error(f"Error during login validation: {str(e)}")
+        await take_screenshot(page, "login_validation_error")
+        return False
 
-async def send_dms(messages_list, usernames, cookies_file, instagram_username, instagram_password):
-    async with async_playwright() as p:
-        browser = await p.chromium.launch(
-            channel='chrome',
-            headless=True,  # Set to True for production
-            args=['--no-sandbox', '--disable-setuid-sandbox']
-        )
-        context = await browser.new_context()
-        
-        # Load cookies
-        try:
+async def login_with_cookies(context, page):
+    cookies_file = 'session.json'
+    try:
+        # Load cookies if available
+        if os.path.exists(cookies_file):
             with open(cookies_file, 'r') as json_file:
-                cookies = json.load(json_file)
-            await context.add_cookies(cookies)
-            print("Cookies loaded successfully")
-        except Exception as e:
-            print(f"Error loading cookies: {e}")
+                saved_cookies = json.load(json_file)
+            await context.add_cookies(saved_cookies)
+            logging.info("Cookies loaded successfully")
 
-        page = await context.new_page()
+        # Validate the login
+        if await validate_login(page):
+            return True
+        else:
+            logging.error("Login unsuccessful. Cookies may be expired.")
+            return False
+    except Exception as e:
+        logging.error(f"Error during login: {str(e)}")
+        await take_screenshot(page, "login_error")
+        return False
+
+async def manual_login(context, page):
+    try:
+        # Direct the user to log in manually
+        logging.info("Manual login required.")
+        print("Please log in manually.")
+        await page.goto("https://www.instagram.com/accounts/login/")
         
-        try:
-            print("Navigating to Instagram...")
-            await page.goto("https://www.instagram.com/")
-            await page.wait_for_load_state('networkidle')
+        # Wait for the user to complete login
+        await page.wait_for_selector('svg[aria-label="Home"]', timeout=60000)
+        
+        # Validate login and save new session cookies
+        if await validate_login(page):
+            logging.info("Manual login successful. Saving new cookies.")
+            new_cookies = await context.cookies()
+            with open('session.json', 'w') as json_file:
+                json.dump(new_cookies, json_file)
+            logging.info("New cookies saved successfully.")
+            return True
+        else:
+            logging.error("Manual login failed.")
+            return False
+    except Exception as e:
+        logging.error(f"Error during manual login: {str(e)}")
+        await take_screenshot(page, "manual_login_error")
+        return False
 
-            # Check if we're logged in
-            is_logged_in = await page.is_visible('a[href="/direct/inbox/"]')
-            if not is_logged_in:
-                print("Not logged in. Attempting manual login...")
-                await login(page, instagram_username, instagram_password)
-                print("Login successful")
+def read_csv_usernames(filename):
+    usernames = []
+    try:
+        with open(filename, 'r') as file:
+            csv_reader = csv.reader(file)
+            for row in csv_reader:
+                if row and row[0]:
+                    usernames.append(row[0])
+        return usernames
+    except FileNotFoundError:
+        logging.error(f"CSV file '{filename}' not found.")
+        return []
 
-                # Save new cookies
-                new_cookies = await context.cookies()
-                with open(cookies_file, 'w') as json_file:
-                    json.dump(new_cookies, json_file)
-                print("New cookies saved")
+def get_user_input_usernames():
+    usernames = []
+    print("Enter usernames (one per line). Press Enter twice to finish:")
+    while True:
+        username = input().strip()
+        if not username:
+            break
+        usernames.append(username)
+    return usernames
 
-            results = []
-            for username in usernames:
-                success = False
-                for attempt in range(3):  # Try sending the DM up to 3 times
-                    try:
-                        print(f"Sending message to {username}, Attempt {attempt + 1}")
-                        await page.goto('https://www.instagram.com/direct/new/', timeout=90000)
-                        await page.wait_for_load_state('networkidle', timeout=90000)
+async def send_message(page, username, message):
+    try:
+        logging.info(f"Attempting to send message to {username}")
+        
+        # Navigate directly to the user's profile
+        await page.goto(f'https://www.instagram.com/{username}/', timeout=30000)
+        await page.wait_for_load_state('networkidle', timeout=30000)
 
-                        # Verify visibility of the input box and proceed
-                        await page.wait_for_selector('input[name="queryBox"]', timeout=90000)
-                        await page.fill('input[name="queryBox"]', username)
-                        
-                        await page.wait_for_selector(f'div[role="button"]:has-text("{username}")', timeout=50000)
-                        await page.click(f'div[role="button"]:has-text("{username}")')
-                        await page.wait_for_selector('div[role="button"]:has-text("Next")', timeout=50000)
-                        await page.click('div[role="button"]:has-text("Next")')
+        # Look for the "Message" button
+        message_button_selector = 'div[role="button"]:has-text("Message")'
+        await page.wait_for_selector(message_button_selector, timeout=10000)
+        await page.click(message_button_selector)
 
-                        # Type and send message
-                        await page.wait_for_selector('textarea[placeholder="Message..."]', timeout=50000)
-                        message = random.choice(messages_list)
-                        await page.fill('textarea[placeholder="Message..."]', message)
-                        await page.click('button:has-text("Send")')
+        # Wait for the message input to appear
+        message_input_selector = 'textarea[placeholder="Message..."]'
+        await page.wait_for_selector(message_input_selector, timeout=10000)
 
-                        print(f"Message sent to {username}")
-                        results.append({"username": username, "status": "sent"})
-                        success = True
-                        break  # Exit retry loop on success
+        # Type and send the message
+        await page.fill(message_input_selector, message)
+        await page.keyboard.press('Enter')
 
-                    except Exception as e:
-                        print(f"Error sending message to {username} on attempt {attempt + 1}: {traceback.format_exc()}")
+        logging.info(f"Message sent to {username}")
+        await take_screenshot(page, f"message_sent_{username}")
+        return True
+    except Exception as e:
+        logging.error(f"Error sending message to {username}: {str(e)}")
+        await take_screenshot(page, f"message_error_{username}")
+        return False
+async def main(messages_list, usernames):
+    proxy = os.getenv('PROXY')
+    async with async_playwright() as p:
+        launch_options = {
+            'headless': False,
+            'channel': 'chrome'
+        }
+        if proxy:
+            launch_options['proxy'] = {
+                'server': proxy
+            }
+        browser = await p.chromium.launch(**launch_options)
+        context = await browser.new_context()
+        page = await context.new_page()
 
-                    if attempt < 2:  # Wait before retrying
-                        print(f"Retrying in 5 seconds...")
-                        await asyncio.sleep(5)
-
-                if not success:
-                    results.append({"username": username, "status": "failed", "error": "Failed after 3 attempts"})
-
-            return results
-
-        except Exception as e:
-            print(f"Unexpected error: {e}")
-            return [{"username": username, "status": "failed", "error": str(e)} for username in usernames]
-
-        finally:
+        if not await login_with_cookies(context, page):
+            logging.error("Login failed. Exiting.")
             await browser.close()
+            return
 
-def send_messages(messages_list, usernames, cookies_file='session.json', instagram_username=None, instagram_password=None):
-    return asyncio.run(send_dms(messages_list, usernames, cookies_file, instagram_username, instagram_password))
+        successful_sends = []
+        failed_sends = []
+
+        for username in usernames:
+            message = random.choice(messages_list)
+            success = await send_message(page, username, message)
+            if success:
+                successful_sends.append(username)
+            else:
+                failed_sends.append(username)
+            await asyncio.sleep(random.uniform(10, 20))  # Add a longer delay between messages
+
+        await browser.close()
+
+        logging.info("\nSummary:")
+        logging.info(f"Successfully sent messages to: {successful_sends}")
+        logging.info(f"Failed to send messages to: {failed_sends}")
+        print("\nSummary:")
+        print(f"Successfully sent messages to: {successful_sends}")
+        print(f"Failed to send messages to: {failed_sends}")
+
+if __name__ == "__main__":    # Read environment variables for messages
+    message_var_count = int(os.getenv("NUM_VARIATIONS", 1))
+    messages = [os.getenv(f"DM_MESSAGE_{i+1}", f"Default message {i+1}") for i in range(message_var_count)]
+
+    # Ask user for input method
+    input_method = input("Choose input method (1 for CSV, 2 for manual input): ")
+
+    if input_method == '1':
+        csv_filename = input("Enter the CSV filename: ")
+        usernames = read_csv_usernames(csv_filename)
+    elif input_method == '2':
+        usernames = get_user_input_usernames()
+    else:
+        logging.error("Invalid input method selected. Exiting.")
+        print("Invalid input method selected. Exiting.")
+        sys.exit(1)
+
+    if not usernames:
+        logging.error("No usernames provided. Exiting.")
+        print("No usernames provided. Exiting.")
+        sys.exit(1)
+
+    asyncio.run(main(messages, usernames))

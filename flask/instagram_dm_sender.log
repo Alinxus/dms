@@ -1,0 +1,234 @@
+2024-08-15 07:54:49,448 - WARNING -  * Debugger is active!
+2024-08-15 07:54:49,448 - INFO -  * Debugger PIN: 141-997-609
+2024-08-15 07:54:58,153 - INFO - Cookies loaded successfully
+2024-08-15 07:55:00,814 - INFO - Login successful
+2024-08-15 07:55:00,814 - INFO - Attempting to send message to olajide.alameen
+2024-08-15 07:55:13,392 - ERROR - Error sending message to olajide.alameen: Page.wait_for_selector: Timeout 10000ms exceeded.
+Call log:
+waiting for locator("div[role=\"button\"]:has-text(\"Message\")") to be visible
+
+2024-08-15 07:55:13,603 - INFO - Screenshot saved: screenshots/message_error_olajide.alameen_20240815_075513.png
+2024-08-15 07:55:20,757 - INFO - Cookies loaded successfully
+2024-08-15 07:55:23,328 - INFO - Login successful
+2024-08-15 07:55:23,328 - INFO - Attempting to send message to olajide.alameen
+2024-08-15 07:55:27,643 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2024-08-15 07:55:27,644 - INFO - [33mPress CTRL+C to quit[0m
+2024-08-15 07:55:27,644 - INFO -  * Restarting with stat
+2024-08-15 07:55:27,911 - WARNING -  * Debugger is active!
+2024-08-15 07:55:27,912 - INFO -  * Debugger PIN: 141-997-609
+2024-08-15 07:55:33,752 - INFO - 127.0.0.1 - - [15/Aug/2024 07:55:33] "GET / HTTP/1.1" 200 -
+2024-08-15 07:55:46,203 - INFO - Cookies loaded successfully
+2024-08-15 07:55:48,729 - INFO - Login successful
+2024-08-15 07:55:48,730 - INFO - Attempting to send message to alexlikesbiz
+2024-08-15 07:56:01,046 - ERROR - Error sending message to alexlikesbiz: Page.wait_for_selector: Timeout 10000ms exceeded.
+Call log:
+waiting for locator("div[role=\"button\"]:has-text(\"Message\")") to be visible
+
+2024-08-15 07:56:01,142 - INFO - Screenshot saved: screenshots/message_error_alexlikesbiz_20240815_075601.png
+2024-08-15 07:56:17,291 - INFO - 
+Summary:
+2024-08-15 07:56:17,291 - INFO - Successfully sent messages to: []
+2024-08-15 07:56:17,292 - INFO - Failed to send messages to: ['alexlikesbiz']
+2024-08-15 07:56:17,310 - INFO - 127.0.0.1 - - [15/Aug/2024 07:56:17] "POST /send_messages HTTP/1.1" 200 -
+2024-08-15 07:56:18,965 - INFO - Cookies loaded successfully
+2024-08-15 07:56:21,967 - INFO - Login successful
+2024-08-15 07:56:21,968 - INFO - Attempting to send message to alexlikesbiz
+2024-08-15 07:56:34,253 - ERROR - Error sending message to alexlikesbiz: Page.wait_for_selector: Timeout 10000ms exceeded.
+Call log:
+waiting for locator("div[role=\"button\"]:has-text(\"Message\")") to be visible
+
+2024-08-15 07:56:34,405 - INFO - Screenshot saved: screenshots/message_error_alexlikesbiz_20240815_075634.png
+2024-08-15 07:56:49,491 - INFO - 
+Summary:
+2024-08-15 07:56:49,492 - INFO - Successfully sent messages to: []
+2024-08-15 07:56:49,492 - INFO - Failed to send messages to: ['alexlikesbiz']
+2024-08-15 07:56:49,501 - INFO - 127.0.0.1 - - [15/Aug/2024 07:56:49] "POST /send_messages HTTP/1.1" 200 -
+2024-08-15 07:58:50,991 - INFO -  * Detected change in '/workspaces/dms/flask/send.py', reloading
+2024-08-15 07:58:51,044 - INFO -  * Restarting with stat
+2024-08-15 07:58:51,472 - WARNING -  * Debugger is active!
+2024-08-15 07:58:51,473 - INFO -  * Debugger PIN: 141-997-609
+2024-08-15 07:59:59,760 - INFO - 127.0.0.1 - - [15/Aug/2024 07:59:59] "GET / HTTP/1.1" 200 -
+2024-08-15 08:00:22,252 - INFO - Cookies loaded successfully
+2024-08-15 08:00:24,898 - INFO - Login successful
+2024-08-15 08:00:27,360 - INFO - Login verified successfully. Proceeding with messaging.
+2024-08-15 08:00:27,360 - INFO - Attempting to send message to alexlikesbiz
+2024-08-15 08:00:39,812 - ERROR - Error sending message to alexlikesbiz: Page.wait_for_selector: Timeout 10000ms exceeded.
+Call log:
+waiting for locator("div[role=\"button\"]:has-text(\"Message\")") to be visible
+
+2024-08-15 08:00:39,915 - INFO - Screenshot saved: screenshots/message_error_alexlikesbiz_20240815_080039.png
+2024-08-15 08:00:50,315 - INFO - 
+Summary:
+2024-08-15 08:00:50,316 - INFO - Successfully sent messages to: []
+2024-08-15 08:00:50,316 - INFO - Failed to send messages to: ['alexlikesbiz']
+2024-08-15 08:00:50,323 - INFO - 127.0.0.1 - - [15/Aug/2024 08:00:50] "POST /send_messages HTTP/1.1" 200 -
+2024-08-15 08:02:08,919 - INFO -  * Detected change in '/workspaces/dms/flask/send.py', reloading
+2024-08-15 08:02:09,073 - INFO -  * Restarting with stat
+2024-08-15 08:02:09,499 - WARNING -  * Debugger is active!
+2024-08-15 08:02:09,500 - INFO -  * Debugger PIN: 141-997-609
+2024-08-15 08:02:17,837 - INFO -  * Detected change in '/workspaces/dms/flask/send.py', reloading
+2024-08-15 08:02:17,889 - INFO -  * Restarting with stat
+2024-08-15 08:02:18,279 - WARNING -  * Debugger is active!
+2024-08-15 08:02:18,280 - INFO -  * Debugger PIN: 141-997-609
+2024-08-15 08:02:27,990 - INFO - Cookies loaded successfully
+2024-08-15 08:02:31,536 - INFO - Login successful
+2024-08-15 08:02:34,059 - INFO - Login verified successfully. Proceeding with messaging.
+2024-08-15 08:02:34,059 - INFO - Attempting to send message to alexlikesbiz
+2024-08-15 08:03:06,690 - ERROR - Error sending message to alexlikesbiz: Page.wait_for_selector: Timeout 30000ms exceeded.
+Call log:
+waiting for locator("div[role=\"button\"]:has-text(\"Message\")") to be visible
+
+2024-08-15 08:03:06,886 - INFO - Screenshot saved: screenshots/message_error_alexlikesbiz_20240815_080306.png
+2024-08-15 08:03:18,804 - INFO - 
+Summary:
+2024-08-15 08:03:18,805 - INFO - Successfully sent messages to: []
+2024-08-15 08:03:18,805 - INFO - Failed to send messages to: ['alexlikesbiz']
+2024-08-15 08:03:18,812 - INFO - 127.0.0.1 - - [15/Aug/2024 08:03:18] "POST /send_messages HTTP/1.1" 200 -
+2024-08-15 08:03:57,961 - INFO -  * Detected change in '/workspaces/dms/flask/send.py', reloading
+2024-08-15 08:03:58,024 - INFO -  * Restarting with stat
+2024-08-15 08:03:58,497 - WARNING -  * Debugger is active!
+2024-08-15 08:03:58,497 - INFO -  * Debugger PIN: 141-997-609
+2024-08-15 08:04:01,784 - INFO -  * Detected change in '/workspaces/dms/flask/send.py', reloading
+2024-08-15 08:04:01,835 - INFO -  * Restarting with stat
+2024-08-15 08:04:02,255 - WARNING -  * Debugger is active!
+2024-08-15 08:04:02,255 - INFO -  * Debugger PIN: 141-997-609
+2024-08-15 08:04:05,856 - INFO -  * Detected change in '/workspaces/dms/flask/send.py', reloading
+2024-08-15 08:04:05,964 - INFO -  * Restarting with stat
+2024-08-15 08:04:06,422 - WARNING -  * Debugger is active!
+2024-08-15 08:04:06,423 - INFO -  * Debugger PIN: 141-997-609
+2024-08-15 08:04:09,696 - INFO -  * Detected change in '/workspaces/dms/flask/send.py', reloading
+2024-08-15 08:04:09,746 - INFO -  * Restarting with stat
+2024-08-15 08:04:10,210 - WARNING -  * Debugger is active!
+2024-08-15 08:04:10,210 - INFO -  * Debugger PIN: 141-997-609
+2024-08-15 08:04:14,887 - INFO -  * Detected change in '/workspaces/dms/flask/send.py', reloading
+2024-08-15 08:04:14,958 - INFO -  * Restarting with stat
+2024-08-15 08:04:15,443 - WARNING -  * Debugger is active!
+2024-08-15 08:04:15,443 - INFO -  * Debugger PIN: 141-997-609
+2024-08-15 08:04:19,829 - INFO - Cookies loaded successfully
+2024-08-15 08:04:22,963 - INFO - Login successful
+2024-08-15 08:04:25,854 - INFO - Login verified successfully. Proceeding with messaging.
+2024-08-15 08:04:25,855 - INFO - Attempting to send message to alexlikesbiz
+2024-08-15 08:05:59,453 - ERROR - Error sending message to alexlikesbiz: Page.wait_for_selector: Timeout 90000ms exceeded.
+Call log:
+waiting for locator("div[role=\"button\"]:has-text(\"Message\")") to be visible
+
+2024-08-15 08:05:59,554 - INFO - Screenshot saved: screenshots/message_error_alexlikesbiz_20240815_080559.png
+2024-08-15 08:06:15,082 - INFO - 
+Summary:
+2024-08-15 08:06:15,082 - INFO - Successfully sent messages to: []
+2024-08-15 08:06:15,082 - INFO - Failed to send messages to: ['alexlikesbiz']
+2024-08-15 08:06:15,091 - INFO - 127.0.0.1 - - [15/Aug/2024 08:06:15] "POST /send_messages HTTP/1.1" 200 -
+2024-08-15 08:06:23,771 - INFO -  * Detected change in '/workspaces/dms/flask/test.py', reloading
+2024-08-15 08:06:23,841 - INFO -  * Restarting with stat
+2024-08-15 08:06:24,437 - WARNING -  * Debugger is active!
+2024-08-15 08:06:24,438 - INFO -  * Debugger PIN: 141-997-609
+2024-08-15 08:06:36,630 - INFO -  * Detected change in '/workspaces/dms/flask/test.py', reloading
+2024-08-15 08:06:36,708 - INFO -  * Restarting with stat
+2024-08-15 08:06:37,146 - WARNING -  * Debugger is active!
+2024-08-15 08:06:37,147 - INFO -  * Debugger PIN: 141-997-609
+2024-08-15 08:06:41,825 - INFO -  * Detected change in '/workspaces/dms/flask/test.py', reloading
+2024-08-15 08:06:41,885 - INFO -  * Restarting with stat
+2024-08-15 08:06:42,371 - WARNING -  * Debugger is active!
+2024-08-15 08:06:42,371 - INFO -  * Debugger PIN: 141-997-609
+2024-08-15 08:06:47,250 - INFO -  * Detected change in '/workspaces/dms/flask/test.py', reloading
+2024-08-15 08:06:47,306 - INFO -  * Restarting with stat
+2024-08-15 08:06:47,844 - WARNING -  * Debugger is active!
+2024-08-15 08:06:47,845 - INFO -  * Debugger PIN: 141-997-609
+2024-08-15 08:06:55,924 - INFO -  * Detected change in '/workspaces/dms/flask/test.py', reloading
+2024-08-15 08:06:55,976 - INFO -  * Restarting with stat
+2024-08-15 08:06:56,484 - WARNING -  * Debugger is active!
+2024-08-15 08:06:56,486 - INFO -  * Debugger PIN: 141-997-609
+2024-08-15 08:07:06,123 - INFO -  * Detected change in '/workspaces/dms/flask/test.py', reloading
+2024-08-15 08:07:06,176 - INFO -  * Restarting with stat
+2024-08-15 08:07:06,587 - WARNING -  * Debugger is active!
+2024-08-15 08:07:06,588 - INFO -  * Debugger PIN: 141-997-609
+2024-08-15 08:07:16,087 - INFO -  * Detected change in '/workspaces/dms/flask/test.py', reloading
+2024-08-15 08:07:16,148 - INFO -  * Restarting with stat
+2024-08-15 08:07:16,565 - WARNING -  * Debugger is active!
+2024-08-15 08:07:16,566 - INFO -  * Debugger PIN: 141-997-609
+2024-08-15 15:14:00,409 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2024-08-15 15:14:00,410 - INFO - [33mPress CTRL+C to quit[0m
+2024-08-15 15:14:00,411 - INFO -  * Restarting with stat
+2024-08-15 15:14:00,797 - WARNING -  * Debugger is active!
+2024-08-15 15:14:00,800 - INFO -  * Debugger PIN: 500-660-678
+2024-08-15 15:14:11,420 - INFO - 127.0.0.1 - - [15/Aug/2024 15:14:11] "GET / HTTP/1.1" 200 -
+2024-08-15 15:24:27,267 - INFO - 127.0.0.1 - - [15/Aug/2024 15:24:27] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2024-08-15 15:24:32,294 - INFO - 127.0.0.1 - - [15/Aug/2024 15:24:32] "[35m[1mPOST / HTTP/1.1[0m" 500 -
+2024-08-15 15:24:32,655 - INFO - 127.0.0.1 - - [15/Aug/2024 15:24:32] "GET /?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+2024-08-15 15:24:34,653 - INFO - 127.0.0.1 - - [15/Aug/2024 15:24:34] "GET /?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+2024-08-15 15:24:35,566 - INFO - 127.0.0.1 - - [15/Aug/2024 15:24:35] "GET /?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+2024-08-15 15:24:37,917 - INFO - 127.0.0.1 - - [15/Aug/2024 15:24:37] "[36mGET /?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+2024-08-15 15:25:57,587 - INFO -  * Detected change in '/workspaces/dms/flask/send.py', reloading
+2024-08-15 15:25:57,642 - INFO -  * Restarting with stat
+2024-08-15 15:25:58,115 - WARNING -  * Debugger is active!
+2024-08-15 15:25:58,115 - INFO -  * Debugger PIN: 500-660-678
+2024-08-15 15:26:56,491 - INFO - 127.0.0.1 - - [15/Aug/2024 15:26:56] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2024-08-15 15:27:00,239 - INFO - Cookies loaded successfully
+2024-08-15 15:27:08,271 - ERROR - Error during login validation: Page.goto: net::ERR_TIMED_OUT at https://www.instagram.com/
+Call log:
+navigating to "https://www.instagram.com/", waiting until "load"
+
+2024-08-15 15:27:08,517 - INFO - Screenshot saved: screenshots/login_validation_error_20240815_152708.png
+2024-08-15 15:27:08,517 - ERROR - Login unsuccessful. Cookies may be expired.
+2024-08-15 15:27:08,517 - ERROR - Login failed. Exiting.
+2024-08-15 15:27:08,573 - INFO - 127.0.0.1 - - [15/Aug/2024 15:27:08] "[32mPOST / HTTP/1.1[0m" 302 -
+2024-08-15 15:27:09,112 - INFO - 127.0.0.1 - - [15/Aug/2024 15:27:09] "GET / HTTP/1.1" 200 -
+2024-08-15 15:36:36,296 - INFO -  * Detected change in '/workspaces/dms/flask/send.py', reloading
+2024-08-15 15:36:36,335 - INFO -  * Restarting with stat
+2024-08-15 15:37:03,859 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2024-08-15 15:37:03,859 - INFO - [33mPress CTRL+C to quit[0m
+2024-08-15 15:37:03,859 - INFO -  * Restarting with stat
+2024-08-15 15:37:04,155 - WARNING -  * Debugger is active!
+2024-08-15 15:37:04,156 - INFO -  * Debugger PIN: 500-660-678
+2024-08-15 15:37:08,101 - INFO - 127.0.0.1 - - [15/Aug/2024 15:37:08] "GET / HTTP/1.1" 200 -
+2024-08-15 15:38:38,639 - ERROR - Error during login: Page.goto: net::ERR_TIMED_OUT at https://www.instagram.com/accounts/login/
+Call log:
+navigating to "https://www.instagram.com/accounts/login/", waiting until "load"
+
+2024-08-15 15:38:38,777 - INFO - Screenshot saved: screenshots/login_error_20240815_153838.png
+2024-08-15 15:38:38,778 - ERROR - Login failed. Exiting.
+2024-08-15 15:38:38,834 - INFO - 127.0.0.1 - - [15/Aug/2024 15:38:38] "[35m[1mPOST / HTTP/1.1[0m" 500 -
+2024-08-15 15:38:39,529 - INFO - 127.0.0.1 - - [15/Aug/2024 15:38:39] "[36mGET /?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+2024-08-15 15:38:39,574 - INFO - 127.0.0.1 - - [15/Aug/2024 15:38:39] "[36mGET /?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+2024-08-15 15:38:39,973 - INFO - 127.0.0.1 - - [15/Aug/2024 15:38:39] "[36mGET /?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+2024-08-15 15:38:40,416 - INFO - 127.0.0.1 - - [15/Aug/2024 15:38:40] "[36mGET /?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+2024-08-15 15:43:29,801 - INFO -  * Detected change in '/workspaces/dms/flask/send.py', reloading
+2024-08-15 15:43:29,862 - INFO -  * Restarting with stat
+2024-08-15 15:43:30,335 - WARNING -  * Debugger is active!
+2024-08-15 15:43:30,336 - INFO -  * Debugger PIN: 500-660-678
+2024-08-15 15:43:41,196 - INFO - 127.0.0.1 - - [15/Aug/2024 15:43:41] "GET / HTTP/1.1" 200 -
+2024-08-15 15:44:21,326 - ERROR - Error during login: Page.goto: net::ERR_TIMED_OUT at https://www.instagram.com/accounts/login/
+Call log:
+navigating to "https://www.instagram.com/accounts/login/", waiting until "load"
+
+2024-08-15 15:44:21,445 - INFO - Screenshot saved: screenshots/login_error_20240815_154421.png
+2024-08-15 15:44:21,445 - ERROR - Login failed. Exiting.
+2024-08-15 15:44:21,518 - INFO - 127.0.0.1 - - [15/Aug/2024 15:44:21] "[35m[1mPOST / HTTP/1.1[0m" 500 -
+2024-08-15 15:44:23,418 - INFO - 127.0.0.1 - - [15/Aug/2024 15:44:23] "[36mGET /?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+2024-08-15 15:44:23,441 - INFO - 127.0.0.1 - - [15/Aug/2024 15:44:23] "[36mGET /?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+2024-08-15 15:44:24,232 - INFO - 127.0.0.1 - - [15/Aug/2024 15:44:24] "[36mGET /?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+2024-08-15 15:44:24,638 - INFO - 127.0.0.1 - - [15/Aug/2024 15:44:24] "[36mGET /?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+2024-08-15 15:44:40,210 - ERROR - Error during login: Page.goto: net::ERR_TIMED_OUT at https://www.instagram.com/accounts/login/
+Call log:
+navigating to "https://www.instagram.com/accounts/login/", waiting until "load"
+
+2024-08-15 15:44:40,328 - INFO - Screenshot saved: screenshots/login_error_20240815_154440.png
+2024-08-15 15:44:40,328 - ERROR - Login failed. Exiting.
+2024-08-15 15:44:40,387 - INFO - 127.0.0.1 - - [15/Aug/2024 15:44:40] "[35m[1mPOST / HTTP/1.1[0m" 500 -
+2024-08-15 15:44:40,874 - INFO - 127.0.0.1 - - [15/Aug/2024 15:44:40] "[36mGET /?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+2024-08-15 15:44:41,054 - INFO - 127.0.0.1 - - [15/Aug/2024 15:44:41] "[36mGET /?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+2024-08-15 15:44:41,357 - INFO - 127.0.0.1 - - [15/Aug/2024 15:44:41] "[36mGET /?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+2024-08-15 15:44:42,020 - INFO - 127.0.0.1 - - [15/Aug/2024 15:44:42] "[36mGET /?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+2024-08-15 15:46:36,199 - INFO -  * Detected change in '/workspaces/dms/flask/send.py', reloading
+2024-08-15 15:46:36,251 - INFO -  * Restarting with stat
+2024-08-15 15:50:27,465 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2024-08-15 15:50:27,466 - INFO - [33mPress CTRL+C to quit[0m
+2024-08-15 15:50:27,466 - INFO -  * Restarting with stat
+2024-08-15 15:50:27,924 - WARNING -  * Debugger is active!
+2024-08-15 15:50:27,924 - INFO -  * Debugger PIN: 500-660-678
+2024-08-15 15:50:36,105 - INFO - 127.0.0.1 - - [15/Aug/2024 15:50:36] "[32mPOST / HTTP/1.1[0m" 302 -
+2024-08-15 15:50:38,191 - INFO - 127.0.0.1 - - [15/Aug/2024 15:50:38] "GET / HTTP/1.1" 200 -
