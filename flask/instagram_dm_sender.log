@@ -273,3 +273,311 @@ Traceback (most recent call last):
     result = asyncio.run(send_dm_messages(messages, contacts, cookies_path))
 TypeError: main() takes 2 positional arguments but 3 were given
 2024-08-16 08:02:47,757 - INFO - 127.0.0.1 - - [16/Aug/2024 08:02:47] "[35m[1mPOST /send-dms HTTP/1.1[0m" 500 -
+2024-08-16 08:03:32,035 - INFO - Starting Flask application
+2024-08-16 08:03:32,047 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2024-08-16 08:03:32,048 - INFO - [33mPress CTRL+C to quit[0m
+2024-08-16 08:03:32,048 - INFO -  * Restarting with stat
+2024-08-16 08:03:32,311 - INFO - Starting Flask application
+2024-08-16 08:03:32,317 - WARNING -  * Debugger is active!
+2024-08-16 08:03:32,317 - INFO -  * Debugger PIN: 108-662-938
+2024-08-16 08:03:37,292 - INFO - Received request to send DMs
+2024-08-16 08:03:37,293 - INFO - Received 1 contacts from input
+2024-08-16 08:03:37,294 - INFO - Read cookies content from uploaded file
+2024-08-16 08:03:37,294 - INFO - Saved cookies to temporary file: /workspaces/dms/flask/temp_session_20240816080337.json
+2024-08-16 08:03:37,295 - INFO - Custom message: hey
+2024-08-16 08:03:37,295 - INFO - Starting DM sending process
+2024-08-16 08:03:37,295 - ERROR - An error occurred during the DM sending process: main() takes 2 positional arguments but 3 were given
+Traceback (most recent call last):
+  File "/workspaces/dms/flask/app.py", line 77, in send_dms
+    result = asyncio.run(send_dm_messages(messages, contacts, cookies_path))
+TypeError: main() takes 2 positional arguments but 3 were given
+2024-08-16 08:03:37,296 - INFO - 127.0.0.1 - - [16/Aug/2024 08:03:37] "[35m[1mPOST /send-dms HTTP/1.1[0m" 500 -
+2024-08-16 08:03:37,782 - INFO - Received request to send DMs
+2024-08-16 08:03:37,783 - INFO - Received 1 contacts from input
+2024-08-16 08:03:37,784 - INFO - Read cookies content from uploaded file
+2024-08-16 08:03:37,785 - INFO - Saved cookies to temporary file: /workspaces/dms/flask/temp_session_20240816080337.json
+2024-08-16 08:03:37,785 - INFO - Custom message: hey
+2024-08-16 08:03:37,785 - INFO - Starting DM sending process
+2024-08-16 08:03:37,786 - ERROR - An error occurred during the DM sending process: main() takes 2 positional arguments but 3 were given
+Traceback (most recent call last):
+  File "/workspaces/dms/flask/app.py", line 77, in send_dms
+    result = asyncio.run(send_dm_messages(messages, contacts, cookies_path))
+TypeError: main() takes 2 positional arguments but 3 were given
+2024-08-16 08:03:37,787 - INFO - 127.0.0.1 - - [16/Aug/2024 08:03:37] "[35m[1mPOST /send-dms HTTP/1.1[0m" 500 -
+2024-08-16 08:04:44,147 - INFO - Received request to send DMs
+2024-08-16 08:04:44,149 - INFO - Received 1 contacts from input
+2024-08-16 08:04:44,149 - INFO - Read cookies content from uploaded file
+2024-08-16 08:04:44,150 - INFO - Saved cookies to temporary file: /workspaces/dms/flask/temp_session_20240816080444.json
+2024-08-16 08:04:44,150 - INFO - Custom message: hey whatsup
+2024-08-16 08:04:44,151 - INFO - Starting DM sending process
+2024-08-16 08:04:44,151 - ERROR - An error occurred during the DM sending process: main() takes 2 positional arguments but 3 were given
+Traceback (most recent call last):
+  File "/workspaces/dms/flask/app.py", line 77, in send_dms
+    result = asyncio.run(send_dm_messages(messages, contacts, cookies_path))
+TypeError: main() takes 2 positional arguments but 3 were given
+2024-08-16 08:04:44,152 - INFO - 127.0.0.1 - - [16/Aug/2024 08:04:44] "[35m[1mPOST /send-dms HTTP/1.1[0m" 500 -
+2024-08-16 08:05:19,283 - INFO - Received request to send DMs
+2024-08-16 08:05:19,284 - INFO - Received 1 contacts from input
+2024-08-16 08:05:19,284 - INFO - Read cookies content from uploaded file
+2024-08-16 08:05:19,285 - INFO - Saved cookies to temporary file: /workspaces/dms/flask/temp_session_20240816080519.json
+2024-08-16 08:05:19,285 - INFO - Custom message: hey whatsup
+2024-08-16 08:05:19,285 - INFO - Starting DM sending process
+2024-08-16 08:05:19,285 - ERROR - An error occurred during the DM sending process: main() takes 2 positional arguments but 3 were given
+Traceback (most recent call last):
+  File "/workspaces/dms/flask/app.py", line 77, in send_dms
+    result = asyncio.run(send_dm_messages(messages, contacts, cookies_path))
+TypeError: main() takes 2 positional arguments but 3 were given
+2024-08-16 08:05:19,285 - INFO - 127.0.0.1 - - [16/Aug/2024 08:05:19] "[35m[1mPOST /send-dms HTTP/1.1[0m" 500 -
+2024-08-16 08:07:37,746 - INFO -  * Detected change in '/workspaces/dms/flask/app.py', reloading
+2024-08-16 08:07:37,807 - INFO -  * Restarting with stat
+2024-08-16 08:07:38,096 - send_logger - INFO - This script should be imported and not run directly
+2024-08-16 08:08:01,569 - send_logger - INFO - This script should be imported and not run directly
+2024-08-16 08:09:44,779 - send_logger - INFO - This script should be imported and not run directly
+2024-08-16 08:11:20,501 - send_logger - INFO - This script should be imported and not run directly
+2024-08-16 08:11:37,256 - app_logger - INFO - Starting Flask application
+2024-08-16 08:11:42,355 - app_logger - INFO - Received request to send DMs
+2024-08-16 08:11:42,361 - app_logger - INFO - Received 1 contacts from input
+2024-08-16 08:11:42,361 - app_logger - INFO - Read cookies content from uploaded file
+2024-08-16 08:11:42,364 - app_logger - INFO - Saved cookies to temporary file: /workspaces/dms/flask/temp_session_20240816081142.json
+2024-08-16 08:11:42,364 - app_logger - INFO - Custom message: hey whatsup
+2024-08-16 08:11:42,369 - app_logger - INFO - Starting DM sending process
+2024-08-16 08:11:42,371 - send_logger - INFO - Starting DM sending process for 1 contacts
+2024-08-16 08:11:42,867 - send_logger - INFO - Launching browser
+2024-08-16 08:11:43,050 - send_logger - INFO - Loading cookies from /workspaces/dms/flask/temp_session_20240816081142.json
+2024-08-16 08:11:43,102 - send_logger - INFO - Cookies loaded successfully
+2024-08-16 08:11:43,206 - send_logger - INFO - Navigating to Instagram
+2024-08-16 08:11:49,453 - send_logger - INFO - Checking login status
+2024-08-16 08:11:49,500 - send_logger - INFO - Successfully logged in
+2024-08-16 08:11:49,500 - send_logger - INFO - Attempting to send message to alexlikesbiz
+2024-08-16 08:11:53,152 - send_logger - INFO - Navigating to DM page for alexlikesbiz
+2024-08-16 08:12:00,624 - send_logger - INFO - Searching for user
+2024-08-16 08:12:30,626 - send_logger - ERROR - Error sending message to alexlikesbiz: Page.fill: Timeout 30000ms exceeded.
+Call log:
+waiting for locator("input[name=\"queryBox\"]")
+
+2024-08-16 08:12:30,709 - send_logger - INFO - Browser closed
+2024-08-16 08:12:30,716 - app_logger - INFO - Removed temporary cookies file: /workspaces/dms/flask/temp_session_20240816081142.json
+2024-08-16 08:12:30,716 - app_logger - INFO - DM sending process completed. Success: 0, Failed: 1
+2024-08-16 08:15:25,240 - app_logger - INFO - Received request to send DMs
+2024-08-16 08:15:25,241 - app_logger - INFO - Received 1 contacts from input
+2024-08-16 08:15:25,242 - app_logger - INFO - Read cookies content from uploaded file
+2024-08-16 08:15:25,242 - app_logger - INFO - Saved cookies to temporary file: /workspaces/dms/flask/temp_session_20240816081525.json
+2024-08-16 08:15:25,242 - app_logger - INFO - Custom message: hey whatsup
+2024-08-16 08:15:25,242 - app_logger - INFO - Starting DM sending process
+2024-08-16 08:15:25,242 - send_logger - INFO - Starting DM sending process for 1 contacts
+2024-08-16 08:15:25,499 - send_logger - INFO - Launching browser
+2024-08-16 08:15:25,605 - send_logger - INFO - Loading cookies from /workspaces/dms/flask/temp_session_20240816081525.json
+2024-08-16 08:15:25,643 - send_logger - INFO - Cookies loaded successfully
+2024-08-16 08:15:25,696 - send_logger - INFO - Navigating to Instagram
+2024-08-16 08:15:30,639 - send_logger - INFO - Checking login status
+2024-08-16 08:15:30,759 - send_logger - INFO - Successfully logged in
+2024-08-16 08:15:30,760 - send_logger - INFO - Attempting to send message to alexlikesbiz
+2024-08-16 08:15:34,020 - send_logger - INFO - Navigating to DM page for alexlikesbiz
+2024-08-16 08:15:42,358 - send_logger - INFO - Searching for user
+2024-08-16 08:16:12,360 - send_logger - ERROR - Error sending message to alexlikesbiz: Page.fill: Timeout 30000ms exceeded.
+Call log:
+waiting for locator("input[name=\"queryBox\"]")
+
+2024-08-16 08:16:12,436 - send_logger - INFO - Browser closed
+2024-08-16 08:16:12,443 - app_logger - INFO - Removed temporary cookies file: /workspaces/dms/flask/temp_session_20240816081525.json
+2024-08-16 08:16:12,443 - app_logger - INFO - DM sending process completed. Success: 0, Failed: 1
+2024-08-16 08:17:51,675 - app_logger - INFO - Rendering index page
+2024-08-16 08:18:12,200 - app_logger - INFO - Received request to send DMs
+2024-08-16 08:18:12,201 - app_logger - INFO - Received 1 contacts from input
+2024-08-16 08:18:12,202 - app_logger - INFO - Read cookies content from uploaded file
+2024-08-16 08:18:12,202 - app_logger - INFO - Saved cookies to temporary file: /workspaces/dms/flask/temp_session_20240816081812.json
+2024-08-16 08:18:12,203 - app_logger - INFO - Custom message: whatsup
+2024-08-16 08:18:12,203 - app_logger - INFO - Starting DM sending process
+2024-08-16 08:18:12,203 - send_logger - INFO - Starting DM sending process for 1 contacts
+2024-08-16 08:18:12,519 - send_logger - INFO - Launching browser
+2024-08-16 08:18:12,620 - send_logger - INFO - Loading cookies from /workspaces/dms/flask/temp_session_20240816081812.json
+2024-08-16 08:18:12,660 - send_logger - INFO - Cookies loaded successfully
+2024-08-16 08:18:12,737 - send_logger - INFO - Navigating to Instagram
+2024-08-16 08:18:17,356 - send_logger - INFO - Checking login status
+2024-08-16 08:18:17,524 - send_logger - INFO - Successfully logged in
+2024-08-16 08:18:17,524 - send_logger - INFO - Attempting to send message to alexlikesbiz
+2024-08-16 08:18:20,808 - send_logger - INFO - Navigating to DM page for alexlikesbiz
+2024-08-16 08:18:28,206 - send_logger - INFO - Searching for user
+2024-08-16 08:18:58,209 - send_logger - ERROR - Error sending message to alexlikesbiz: Page.fill: Timeout 30000ms exceeded.
+Call log:
+waiting for locator("input[name=\"queryBox\"]")
+
+2024-08-16 08:18:58,271 - send_logger - INFO - Browser closed
+2024-08-16 08:18:58,279 - app_logger - INFO - Removed temporary cookies file: /workspaces/dms/flask/temp_session_20240816081812.json
+2024-08-16 08:18:58,279 - app_logger - INFO - DM sending process completed. Success: 0, Failed: 1
+2024-08-16 08:20:10,534 - app_logger - INFO - Received request to send DMs
+2024-08-16 08:20:10,535 - app_logger - INFO - Received 1 contacts from input
+2024-08-16 08:20:10,535 - app_logger - INFO - Read cookies content from uploaded file
+2024-08-16 08:20:10,535 - app_logger - INFO - Saved cookies to temporary file: /workspaces/dms/flask/temp_session_20240816082010.json
+2024-08-16 08:20:10,535 - app_logger - INFO - Custom message: whatsup
+2024-08-16 08:20:10,536 - app_logger - INFO - Starting DM sending process
+2024-08-16 08:20:10,536 - send_logger - INFO - Starting DM sending process for 1 contacts
+2024-08-16 08:20:10,768 - send_logger - INFO - Launching browser
+2024-08-16 08:20:10,874 - send_logger - INFO - Loading cookies from /workspaces/dms/flask/temp_session_20240816082010.json
+2024-08-16 08:20:10,910 - send_logger - INFO - Cookies loaded successfully
+2024-08-16 08:20:10,962 - send_logger - INFO - Navigating to Instagram
+2024-08-16 08:20:15,937 - send_logger - INFO - Checking login status
+2024-08-16 08:20:16,099 - send_logger - INFO - Successfully logged in
+2024-08-16 08:20:16,099 - send_logger - INFO - Attempting to send message to alexlikesbiz
+2024-08-16 08:20:19,446 - send_logger - INFO - Navigating to DM page for alexlikesbiz
+2024-08-16 08:20:26,379 - send_logger - INFO - Searching for user
+2024-08-16 08:20:56,381 - send_logger - ERROR - Error sending message to alexlikesbiz: Page.fill: Timeout 30000ms exceeded.
+Call log:
+waiting for locator("input[name=\"queryBox\"]")
+
+2024-08-16 08:20:56,454 - send_logger - INFO - Browser closed
+2024-08-16 08:20:56,465 - app_logger - INFO - Removed temporary cookies file: /workspaces/dms/flask/temp_session_20240816082010.json
+2024-08-16 08:20:56,465 - app_logger - INFO - DM sending process completed. Success: 0, Failed: 1
+2024-08-16 08:21:53,979 - app_logger - INFO - Received request to send DMs
+2024-08-16 08:21:53,980 - app_logger - INFO - Received 1 contacts from input
+2024-08-16 08:21:53,981 - app_logger - INFO - Read cookies content from uploaded file
+2024-08-16 08:21:53,981 - app_logger - INFO - Saved cookies to temporary file: /workspaces/dms/flask/temp_session_20240816082153.json
+2024-08-16 08:21:53,981 - app_logger - INFO - Custom message: whatsup
+2024-08-16 08:21:53,981 - app_logger - INFO - Starting DM sending process
+2024-08-16 08:21:53,981 - send_logger - INFO - Starting DM sending process for 1 contacts
+2024-08-16 08:21:54,225 - send_logger - INFO - Launching browser
+2024-08-16 08:21:54,325 - send_logger - INFO - Loading cookies from /workspaces/dms/flask/temp_session_20240816082153.json
+2024-08-16 08:21:54,363 - send_logger - INFO - Cookies loaded successfully
+2024-08-16 08:21:54,412 - send_logger - INFO - Navigating to Instagram
+2024-08-16 08:22:00,628 - send_logger - INFO - Checking login status
+2024-08-16 08:22:00,667 - send_logger - INFO - Successfully logged in
+2024-08-16 08:22:00,667 - send_logger - INFO - Attempting to send message to alexlikesbiz
+2024-08-16 08:22:04,222 - send_logger - INFO - Navigating to DM page for alexlikesbiz
+2024-08-16 08:22:11,479 - send_logger - INFO - Searching for user
+2024-08-16 08:22:41,482 - send_logger - ERROR - Error sending message to alexlikesbiz: Page.fill: Timeout 30000ms exceeded.
+Call log:
+waiting for locator("input[name=\"queryBox\"]")
+
+2024-08-16 08:22:41,538 - send_logger - INFO - Browser closed
+2024-08-16 08:22:41,544 - app_logger - INFO - Removed temporary cookies file: /workspaces/dms/flask/temp_session_20240816082153.json
+2024-08-16 08:22:41,545 - app_logger - INFO - DM sending process completed. Success: 0, Failed: 1
+2024-08-16 08:24:04,725 - app_logger - INFO - Starting Flask application
+2024-08-16 08:24:10,014 - app_logger - INFO - Received request to send DMs
+2024-08-16 08:24:10,015 - app_logger - INFO - Received 1 contacts from input
+2024-08-16 08:24:10,016 - app_logger - INFO - Read cookies content from uploaded file
+2024-08-16 08:24:10,017 - app_logger - INFO - Saved cookies to temporary file: /workspaces/dms/flask/temp_session_20240816082410.json
+2024-08-16 08:24:10,017 - app_logger - INFO - Custom message: whatsup
+2024-08-16 08:24:10,017 - app_logger - INFO - Starting DM sending process
+2024-08-16 08:24:10,018 - send_logger - INFO - Starting DM sending process for 1 contacts
+2024-08-16 08:24:10,427 - send_logger - INFO - Cookies loaded successfully
+2024-08-16 08:24:16,130 - send_logger - INFO - Navigated to Instagram
+2024-08-16 08:24:16,183 - send_logger - INFO - Successfully logged in
+2024-08-16 08:24:16,183 - send_logger - INFO - Attempting to send message to alexlikesbiz
+2024-08-16 08:24:19,746 - send_logger - INFO - Navigated to alexlikesbiz's profile
+2024-08-16 08:25:19,756 - send_logger - ERROR - Timeout waiting for selector: div[role="button"]:has-text("Message")
+2024-08-16 08:25:19,756 - send_logger - ERROR - Error sending message to alexlikesbiz: Message button not found
+2024-08-16 08:25:23,940 - send_logger - INFO - Browser closed
+2024-08-16 08:25:23,957 - app_logger - INFO - Removed temporary cookies file: /workspaces/dms/flask/temp_session_20240816082410.json
+2024-08-16 08:25:23,958 - app_logger - INFO - DM sending process completed. Success: 0, Failed: 1
+2024-08-16 08:25:44,507 - app_logger - INFO - Received request to send DMs
+2024-08-16 08:25:44,509 - app_logger - INFO - Received 1 contacts from input
+2024-08-16 08:25:44,509 - app_logger - INFO - Read cookies content from uploaded file
+2024-08-16 08:25:44,510 - app_logger - INFO - Saved cookies to temporary file: /workspaces/dms/flask/temp_session_20240816082544.json
+2024-08-16 08:25:44,511 - app_logger - INFO - Custom message: whatsup
+2024-08-16 08:25:44,511 - app_logger - INFO - Starting DM sending process
+2024-08-16 08:25:44,512 - send_logger - INFO - Starting DM sending process for 1 contacts
+2024-08-16 08:25:45,545 - send_logger - INFO - Cookies loaded successfully
+2024-08-16 08:25:52,402 - send_logger - INFO - Navigated to Instagram
+2024-08-16 08:25:52,474 - send_logger - INFO - Successfully logged in
+2024-08-16 08:25:52,475 - send_logger - INFO - Attempting to send message to alexlikesbiz
+2024-08-16 08:25:56,538 - send_logger - INFO - Navigated to alexlikesbiz's profile
+2024-08-16 08:26:56,541 - send_logger - ERROR - Timeout waiting for selector: div[role="button"]:has-text("Message")
+2024-08-16 08:26:56,542 - send_logger - ERROR - Error sending message to alexlikesbiz: Message button not found
+2024-08-16 08:27:00,021 - send_logger - INFO - Browser closed
+2024-08-16 08:27:00,028 - app_logger - INFO - Removed temporary cookies file: /workspaces/dms/flask/temp_session_20240816082544.json
+2024-08-16 08:27:00,028 - app_logger - INFO - DM sending process completed. Success: 0, Failed: 1
+2024-08-16 08:30:55,821 - INFO - Starting Flask application
+2024-08-16 08:30:55,834 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2024-08-16 08:30:55,834 - INFO - [33mPress CTRL+C to quit[0m
+2024-08-16 08:30:55,835 - INFO -  * Restarting with stat
+2024-08-16 08:30:56,095 - INFO - Starting Flask application
+2024-08-16 08:30:56,102 - WARNING -  * Debugger is active!
+2024-08-16 08:30:56,102 - INFO -  * Debugger PIN: 108-662-938
+2024-08-16 08:31:02,151 - INFO - Received request to send DMs
+2024-08-16 08:31:02,153 - INFO - Received 1 contacts from input
+2024-08-16 08:31:02,153 - INFO - Read cookies content from uploaded file
+2024-08-16 08:31:02,154 - INFO - Saved cookies to temporary file: /workspaces/dms/flask/temp_session_20240816083102.json
+2024-08-16 08:31:02,154 - INFO - Custom message: whatsup
+2024-08-16 08:31:02,154 - INFO - Starting DM sending process
+2024-08-16 08:31:02,154 - ERROR - An error occurred during the DM sending process: main() takes 2 positional arguments but 3 were given
+Traceback (most recent call last):
+  File "/workspaces/dms/flask/app.py", line 77, in send_dms
+    result = asyncio.run(send_dm_messages(messages, contacts, cookies_path))
+TypeError: main() takes 2 positional arguments but 3 were given
+2024-08-16 08:31:02,155 - INFO - 127.0.0.1 - - [16/Aug/2024 08:31:02] "[35m[1mPOST /send-dms HTTP/1.1[0m" 500 -
+2024-08-16 08:33:35,295 - INFO -  * Detected change in '/workspaces/dms/flask/send.py', reloading
+2024-08-16 08:33:35,353 - INFO -  * Restarting with stat
+2024-08-16 08:33:35,731 - INFO - Starting Flask application
+2024-08-16 08:33:35,740 - WARNING -  * Debugger is active!
+2024-08-16 08:33:35,741 - INFO -  * Debugger PIN: 108-662-938
+2024-08-16 08:33:37,386 - INFO -  * Detected change in '/workspaces/dms/flask/send.py', reloading
+2024-08-16 08:33:37,485 - INFO -  * Restarting with stat
+2024-08-16 08:33:37,941 - INFO - Starting Flask application
+2024-08-16 08:33:37,950 - WARNING -  * Debugger is active!
+2024-08-16 08:33:37,950 - INFO -  * Debugger PIN: 108-662-938
+2024-08-16 08:33:47,931 - INFO - Received request to send DMs
+2024-08-16 08:33:47,932 - INFO - Received 1 contacts from input
+2024-08-16 08:33:47,932 - INFO - Read cookies content from uploaded file
+2024-08-16 08:33:47,933 - INFO - Saved cookies to temporary file: /workspaces/dms/flask/temp_session_20240816083347.json
+2024-08-16 08:33:47,933 - INFO - Custom message: whatsup
+2024-08-16 08:33:47,933 - INFO - Starting DM sending process
+2024-08-16 08:34:44,947 - INFO - Removed temporary cookies file: /workspaces/dms/flask/temp_session_20240816083347.json
+2024-08-16 08:34:44,947 - INFO - DM sending process completed. Success: 0, Failed: 1
+2024-08-16 08:34:44,947 - INFO - 127.0.0.1 - - [16/Aug/2024 08:34:44] "POST /send-dms HTTP/1.1" 200 -
+2024-08-16 08:37:19,729 - INFO -  * Detected change in '/workspaces/dms/flask/send.py', reloading
+2024-08-16 08:37:19,828 - INFO -  * Restarting with stat
+2024-08-16 08:37:20,268 - INFO - Starting Flask application
+2024-08-16 08:37:20,278 - WARNING -  * Debugger is active!
+2024-08-16 08:37:20,278 - INFO -  * Debugger PIN: 108-662-938
+2024-08-16 08:37:22,992 - INFO - Received request to send DMs
+2024-08-16 08:37:22,997 - INFO - Received 1 contacts from input
+2024-08-16 08:37:23,009 - INFO - Read cookies content from uploaded file
+2024-08-16 08:37:23,009 - INFO - Saved cookies to temporary file: /workspaces/dms/flask/temp_session_20240816083723.json
+2024-08-16 08:37:23,009 - INFO - Custom message: whatsup
+2024-08-16 08:37:23,009 - INFO - Starting DM sending process
+2024-08-16 08:37:23,010 - INFO - Starting DM sending process for 1 contacts
+2024-08-16 08:37:23,673 - INFO - Cookies loaded successfully
+2024-08-16 08:37:31,168 - INFO - Navigated to Instagram homepage
+2024-08-16 08:37:31,241 - INFO - Successfully logged in
+2024-08-16 08:37:31,242 - INFO - Attempting to send message to alexlikesbiz
+2024-08-16 08:37:35,250 - INFO - Navigated to alexlikesbiz's profile
+2024-08-16 08:37:35,286 - ERROR - Error sending message to alexlikesbiz: Message button not found
+2024-08-16 08:37:35,397 - INFO - Browser closed successfully
+2024-08-16 08:37:35,414 - INFO - Removed temporary cookies file: /workspaces/dms/flask/temp_session_20240816083723.json
+2024-08-16 08:37:35,414 - INFO - DM sending process completed. Success: 0, Failed: 1
+2024-08-16 08:37:35,414 - INFO - 127.0.0.1 - - [16/Aug/2024 08:37:35] "POST /send-dms HTTP/1.1" 200 -
+2024-08-16 08:39:27,121 - INFO -  * Detected change in '/workspaces/dms/flask/send.py', reloading
+2024-08-16 08:39:27,188 - INFO -  * Restarting with stat
+2024-08-16 08:39:27,577 - INFO - Starting Flask application
+2024-08-16 08:39:27,588 - WARNING -  * Debugger is active!
+2024-08-16 08:39:27,588 - INFO -  * Debugger PIN: 108-662-938
+2024-08-16 08:39:42,640 - INFO - Received request to send DMs
+2024-08-16 08:39:42,641 - INFO - Received 1 contacts from input
+2024-08-16 08:39:42,641 - INFO - Read cookies content from uploaded file
+2024-08-16 08:39:42,641 - INFO - Saved cookies to temporary file: /workspaces/dms/flask/temp_session_20240816083942.json
+2024-08-16 08:39:42,641 - INFO - Custom message: whatsup
+2024-08-16 08:39:42,641 - INFO - Starting DM sending process
+2024-08-16 08:39:42,642 - INFO - Starting DM sending process for 1 contacts
+2024-08-16 08:39:43,031 - INFO - Cookies loaded successfully
+2024-08-16 08:39:48,975 - INFO - Navigated to Instagram homepage
+2024-08-16 08:39:49,084 - INFO - Successfully logged in
+2024-08-16 08:39:49,085 - INFO - Attempting to send message to alexlikesbiz
+2024-08-16 08:39:55,601 - INFO - Navigated to DM interface for alexlikesbiz
+2024-08-16 08:40:05,603 - ERROR - Error sending message to alexlikesbiz: Page.wait_for_selector: Timeout 10000ms exceeded.
+Call log:
+waiting for locator("textarea[placeholder=\"Message...\"]") to be visible
+
+2024-08-16 08:40:05,670 - INFO - Browser closed successfully
+2024-08-16 08:40:05,676 - INFO - Removed temporary cookies file: /workspaces/dms/flask/temp_session_20240816083942.json
+2024-08-16 08:40:05,676 - INFO - DM sending process completed. Success: 0, Failed: 1
+2024-08-16 08:40:05,677 - INFO - 127.0.0.1 - - [16/Aug/2024 08:40:05] "POST /send-dms HTTP/1.1" 200 -
+2024-08-16 08:41:35,500 - INFO -  * Detected change in '/workspaces/dms/flask/send.py', reloading
+2024-08-16 08:41:35,541 - INFO -  * Restarting with stat
+2024-08-16 08:41:36,020 - INFO - Starting Flask application
+2024-08-16 08:41:36,027 - WARNING -  * Debugger is active!
+2024-08-16 08:41:36,027 - INFO -  * Debugger PIN: 108-662-938
+2024-08-16 08:41:56,390 - INFO -  * Detected change in '/workspaces/dms/flask/app.py', reloading
+2024-08-16 08:41:56,439 - INFO -  * Restarting with stat
+2024-08-16 08:43:49,781 - INFO -  * Restarting with stat
