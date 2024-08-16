@@ -1,53 +1,101 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
-import os
+from flask import Flask, request, jsonify, render_template
 import asyncio
-from send import main  # Assuming your existing DM sending code is in send.py
+from send import main as send_dm_messages
+import os
+import json
+import csv
+import logging
+from datetime import datetime
 
 app = Flask(__name__)
-app.secret_key = 'supersecretkey'  # Change this to a random secret key
 
-# Ensure the upload folder exists
-UPLOAD_FOLDER = os.path.join(os.getcwd(), 'uploads')
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+# Configure logging
+logging.basicConfig(filename='instagram_dm_sender.log', level=logging.INFO,
+                    format='%(asctime)s - %(levelname)s - %(message)s')
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/')
 def index():
-    if request.method == 'POST':
-        # Get the uploaded file
-        if 'csv_file' not in request.files:
-            flash('No file part')
-            return redirect(request.url)
-        file = request.files['csv_file']
-        if file.filename == '':
-            flash('No selected file')
-            return redirect(request.url)
-        if file and file.filename.endswith('.csv'):
-            file_path = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
-            file.save(file_path)
-
-            # Get Instagram credentials and proxy
-            username = request.form['username']
-            password = request.form['password']
-            proxy = request.form.get('proxy')
-
-            # Set environment variables for messages
-            os.environ['INSTAGRAM_USERNAME'] = username
-            os.environ['INSTAGRAM_PASSWORD'] = password
-            if proxy:
-                os.environ['PROXY'] = proxy
-
-            # Run the main async function for sending DMs
-            loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)
-            loop.run_until_complete(main([], [file_path]))  # Assuming main function accepts file path
-
-            flash('Messages sent successfully!')
-            return redirect(url_for('index'))
-        else:
-            flash('Invalid file type. Please upload a CSV file.')
-
+    logging.info("Rendering index page")
     return render_template('index.html')
 
+@app.route('/send-dms', methods=['POST'])
+def send_dms():
+    logging.info("Received request to send DMs")
+    try:
+        contacts = []
+        
+        # Handle contacts from input
+        contacts_input = request.form.get('contactsInput')
+        if contacts_input:
+            contacts.extend([contact.strip() for contact in contacts_input.split(',')])
+            logging.info(f"Received {len(contacts)} contacts from input")
+        
+        # Handle contacts from CSV file
+        if 'contactsFile' in request.files:
+            contacts_file = request.files['contactsFile']
+            contacts_path = os.path.join(os.getcwd(), 'contacts.csv')
+            contacts_file.save(contacts_path)
+            logging.info(f"Saved contacts file to {contacts_path}")
+            with open(contacts_path, 'r') as file:
+                csv_reader = csv.reader(file)
+                for row in csv_reader:
+                    if row:
+                        contacts.append(row[0].strip())
+            logging.info(f"Read {len(contacts)} contacts from CSV file")
+            os.remove(contacts_path)
+            logging.info(f"Removed temporary contacts file: {contacts_path}")
+        
+        if not contacts:
+            logging.error("No contacts provided")
+            return jsonify({'error': 'No contacts provided'}), 400
+        
+        # Handle cookies
+        cookies_content = None
+        if 'cookiesContent' in request.form:
+            cookies_content = request.form['cookiesContent']
+            logging.info("Received cookies content from form data")
+        elif 'cookiesFile' in request.files:
+            cookies_file = request.files['cookiesFile']
+            cookies_content = cookies_file.read().decode('utf-8')
+            logging.info("Read cookies content from uploaded file")
+        
+        if not cookies_content:
+            logging.error("No cookies provided")
+            return jsonify({'error': 'No cookies provided'}), 400
+        
+        # Save cookies to a temporary file
+        cookies_path = os.path.join(os.getcwd(), f'temp_session_{datetime.now().strftime("%Y%m%d%H%M%S")}.json')
+        with open(cookies_path, 'w') as f:
+            f.write(cookies_content)
+        logging.info(f"Saved cookies to temporary file: {cookies_path}")
+        
+        custom_message = request.form.get('customMessage', 'Hello {username}, this is a test message!')
+        messages = [custom_message]
+        logging.info(f"Custom message: {custom_message}")
+        
+        logging.info("Starting DM sending process")
+        result = asyncio.run(send_dm_messages(messages, contacts, cookies_path))
+        
+        # Remove the temporary cookies file
+        os.remove(cookies_path)
+        logging.info(f"Removed temporary cookies file: {cookies_path}")
+        
+        if result is None:
+            logging.error("DM sending process failed")
+            return jsonify({'error': 'DM sending process failed'}), 500
+        
+        success, failed = result
+        logging.info(f"DM sending process completed. Success: {len(success)}, Failed: {len(failed)}")
+        
+        return jsonify({
+            'success': success,
+            'failed': failed
+        })
+    
+    except Exception as e:
+        logging.exception(f"An error occurred during the DM sending process: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
 if __name__ == '__main__':
+    logging.info("Starting Flask application")
     app.run(debug=True)

@@ -232,3 +232,44 @@ navigating to "https://www.instagram.com/accounts/login/", waiting until "load"
 2024-08-15 15:50:27,924 - INFO -  * Debugger PIN: 500-660-678
 2024-08-15 15:50:36,105 - INFO - 127.0.0.1 - - [15/Aug/2024 15:50:36] "[32mPOST / HTTP/1.1[0m" 302 -
 2024-08-15 15:50:38,191 - INFO - 127.0.0.1 - - [15/Aug/2024 15:50:38] "GET / HTTP/1.1" 200 -
+2024-08-16 08:00:16,885 - INFO - Starting Flask application
+2024-08-16 08:00:16,896 - WARNING -  * Debugger is active!
+2024-08-16 08:00:16,900 - INFO -  * Debugger PIN: 108-662-938
+2024-08-16 08:01:23,746 - INFO - Received request to send DMs
+2024-08-16 08:01:23,747 - INFO - Received 1 contacts from input
+2024-08-16 08:01:23,748 - INFO - Read cookies content from uploaded file
+2024-08-16 08:01:23,749 - INFO - Saved cookies to temporary file: /workspaces/dms/flask/temp_session_20240816080123.json
+2024-08-16 08:01:23,749 - INFO - Custom message: hey
+2024-08-16 08:01:23,750 - INFO - Starting DM sending process
+2024-08-16 08:01:23,750 - ERROR - An error occurred during the DM sending process: main() takes 2 positional arguments but 3 were given
+Traceback (most recent call last):
+  File "/workspaces/dms/flask/app.py", line 77, in send_dms
+    result = asyncio.run(send_dm_messages(messages, contacts, cookies_path))
+TypeError: main() takes 2 positional arguments but 3 were given
+2024-08-16 08:01:23,751 - INFO - 127.0.0.1 - - [16/Aug/2024 08:01:23] "[35m[1mPOST /send-dms HTTP/1.1[0m" 500 -
+2024-08-16 08:01:35,777 - INFO - Received request to send DMs
+2024-08-16 08:01:35,779 - INFO - Received 1 contacts from input
+2024-08-16 08:01:35,779 - INFO - Read cookies content from uploaded file
+2024-08-16 08:01:35,780 - INFO - Saved cookies to temporary file: /workspaces/dms/flask/temp_session_20240816080135.json
+2024-08-16 08:01:35,780 - INFO - Custom message: hey
+2024-08-16 08:01:35,781 - INFO - Starting DM sending process
+2024-08-16 08:01:35,781 - ERROR - An error occurred during the DM sending process: main() takes 2 positional arguments but 3 were given
+Traceback (most recent call last):
+  File "/workspaces/dms/flask/app.py", line 77, in send_dms
+    result = asyncio.run(send_dm_messages(messages, contacts, cookies_path))
+TypeError: main() takes 2 positional arguments but 3 were given
+2024-08-16 08:01:35,782 - INFO - 127.0.0.1 - - [16/Aug/2024 08:01:35] "[35m[1mPOST /send-dms HTTP/1.1[0m" 500 -
+2024-08-16 08:02:26,108 - INFO - Rendering index page
+2024-08-16 08:02:26,112 - INFO - 127.0.0.1 - - [16/Aug/2024 08:02:26] "GET / HTTP/1.1" 200 -
+2024-08-16 08:02:47,755 - INFO - Received request to send DMs
+2024-08-16 08:02:47,756 - INFO - Received 1 contacts from input
+2024-08-16 08:02:47,756 - INFO - Read cookies content from uploaded file
+2024-08-16 08:02:47,757 - INFO - Saved cookies to temporary file: /workspaces/dms/flask/temp_session_20240816080247.json
+2024-08-16 08:02:47,757 - INFO - Custom message: hey
+2024-08-16 08:02:47,757 - INFO - Starting DM sending process
+2024-08-16 08:02:47,757 - ERROR - An error occurred during the DM sending process: main() takes 2 positional arguments but 3 were given
+Traceback (most recent call last):
+  File "/workspaces/dms/flask/app.py", line 77, in send_dms
+    result = asyncio.run(send_dm_messages(messages, contacts, cookies_path))
+TypeError: main() takes 2 positional arguments but 3 were given
+2024-08-16 08:02:47,757 - INFO - 127.0.0.1 - - [16/Aug/2024 08:02:47] "[35m[1mPOST /send-dms HTTP/1.1[0m" 500 -
