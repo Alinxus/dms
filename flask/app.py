@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify, render_template
 import asyncio
-from send import main as send_dm_messages
+from send import main as send_instagram_dms
+from send_linkedin import main as send_linkedin_dms
 import os
 import json
 import csv
@@ -15,14 +16,13 @@ def index():
 @app.route('/send-dms', methods=['POST'])
 def send_dms():
     try:
+        platform = request.form.get('platform')
         contacts = []
         
-        # Handle contacts from input
         contacts_input = request.form.get('contactsInput')
         if contacts_input:
             contacts.extend([contact.strip() for contact in contacts_input.split(',')])
         
-        # Handle contacts from CSV file
         if 'contactsFile' in request.files:
             contacts_file = request.files['contactsFile']
             contacts_path = os.path.join(os.getcwd(), 'temp_contacts.csv')
@@ -37,29 +37,31 @@ def send_dms():
         if not contacts:
             return jsonify({'error': 'No contacts provided'}), 400
         
-        # Handle cookies
-        cookies_content = None
-        if 'cookiesContent' in request.form:
-            cookies_content = request.form['cookiesContent']
-        elif 'cookiesFile' in request.files:
-            cookies_file = request.files['cookiesFile']
-            cookies_content = cookies_file.read().decode('utf-8')
-        
-        if not cookies_content:
-            return jsonify({'error': 'No cookies provided'}), 400
-        
-        # Save cookies to a temporary file
-        cookies_path = os.path.join(os.getcwd(), f'temp_session_{datetime.now().strftime("%Y%m%d%H%M%S")}.json')
-        with open(cookies_path, 'w') as f:
-            f.write(cookies_content)
-        
-        custom_message = request.form.get('customMessage', 'Hello {username}, this is a test message!')
+        custom_message = request.form.get('customMessage', 'Hello, this is a test message!')
         messages = [custom_message]
         
-        result = asyncio.run(send_dm_messages(messages, contacts, cookies_path))
+        if platform == 'instagram':
+            cookies_content = request.form.get('cookiesContent') or request.files.get('cookiesFile').read().decode('utf-8')
+            if not cookies_content:
+                return jsonify({'error': 'No cookies provided for Instagram'}), 400
+
+            cookies_path = os.path.join(os.getcwd(), f'temp_session_{datetime.now().strftime("%Y%m%d%H%M%S")}.json')
+            with open(cookies_path, 'w') as f:
+                f.write(cookies_content)
+
+            result = asyncio.run(send_instagram_dms(messages, contacts, cookies_path))
+            os.remove(cookies_path)
+
+        elif platform == 'linkedin':
+            email = request.form.get('email')
+            password = request.form.get('password')
+            if not email or not password:
+                return jsonify({'error': 'Email and password required for LinkedIn'}), 400
+
+            result = asyncio.run(send_linkedin_dms(email, password, messages, contacts))
         
-        # Remove the temporary cookies file
-        os.remove(cookies_path)
+        else:
+            return jsonify({'error': 'Invalid platform specified'}), 400
         
         if result is None:
             return jsonify({'error': 'DM sending process failed'}), 500
