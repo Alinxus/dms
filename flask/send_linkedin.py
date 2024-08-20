@@ -1,91 +1,140 @@
-import asyncio
-from playwright.async_api import async_playwright, TimeoutError
+from playwright.sync_api import sync_playwright, TimeoutError
+import time
 import random
-import warnings
+import json
+import logging
 import os
-from datetime import datetime
 
-warnings.filterwarnings("ignore")
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-async def take_screenshot(page, filename):
+def take_screenshot(page, filename):
     os.makedirs('screenshots', exist_ok=True)
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    screenshot_path = f"screenshots/{filename}_{timestamp}.png"
-    await page.screenshot(path=screenshot_path, full_page=True)
-    print(f"Screenshot saved: {screenshot_path}")
+    page.screenshot(path=f'screenshots/{filename}.png', full_page=True)
+    logging.info(f"Screenshot saved: screenshots/{filename}.png")
 
-async def login_linkedin(page, email, password):
-    await page.goto("https://www.linkedin.com/login")
-    await page.fill('input[id="username"]', email)
-    await page.fill('input[id="password"]', password)
-    await page.click('button[type="submit"]')
-    await page.wait_for_load_state("networkidle")
-    
+def check_login(page):
     if "feed" in page.url:
-        print("Login successful")
+        logging.info("Successfully logged in")
         return True
     else:
-        print("Login failed")
-        await take_screenshot(page, "login_failed")
+        logging.error(f"Login failed. Current URL: {page.url}")
+        take_screenshot(page, "login_failed")
         return False
 
-async def send_message(page, profile_url, message):
+def send_message(page, profile_url, message):
     try:
-        await page.goto(profile_url, wait_until="networkidle")
+        logging.info(f"Navigating to profile: {profile_url}")
+        page.goto(profile_url, wait_until="networkidle", timeout=90000)
+        take_screenshot(page, f"profile_{profile_url.split('/')[-1]}")
         
-        # Look for the "Message" button
-        message_button = await page.query_selector('button[aria-label="Message"]')
+        # Wait for the page to load completely
+        page.wait_for_load_state("networkidle")
+        
+        # Try to find the message button with various selectors
+        message_button_selectors = [
+            'button.artdeco-button.artdeco-button--2.artdeco-button--primary:has-text("Message")',
+            'button[aria-label^="Message"]',
+            'button:has-text("Message")',
+            'a[data-control-name="message"]'
+        ]
+        
+        message_button = None
+        for selector in message_button_selectors:
+            message_button = page.query_selector(selector)
+            if message_button:
+                logging.info(f"Found message button with selector: {selector}")
+                break
+        
         if not message_button:
-            raise Exception("Message button not found")
+            logging.error("Message button not found")
+            take_screenshot(page, f"no_message_button_{profile_url.split('/')[-1]}")
+            return False
         
-        await message_button.click()
-        await page.wait_for_selector('div[aria-label="Write a message…"]', timeout=10000)
+        logging.info("Clicking 'Message' button")
+        message_button.click()
         
-        # Type and send the message
-        await page.fill('div[aria-label="Write a message…"]', message)
-        send_button = await page.query_selector('button[aria-label="Send"]')
+        # Wait for the messaging overlay to appear
+        overlay_selector = 'div[aria-label="Messaging overlay"]'
+        page.wait_for_selector(overlay_selector, state="visible", timeout=10000)
+        take_screenshot(page, f"message_overlay_{profile_url.split('/')[-1]}")
+        
+        # Try to find the message input field
+        input_selector = 'div[role="textbox"][aria-label="Write a message…"]'
+        message_input = page.query_selector(input_selector)
+        
+        if not message_input:
+            logging.error("Message input field not found")
+            take_screenshot(page, f"no_input_field_{profile_url.split('/')[-1]}")
+            return False
+        
+        logging.info("Typing message")
+        message_input.fill(message)
+        
+        # Try to find the send button
+        send_button_selector = 'button[aria-label="Send now"]'
+        send_button = page.query_selector(send_button_selector)
+        
         if not send_button:
-            raise Exception("Send button not found")
+            logging.error("Send button not found")
+            take_screenshot(page, f"no_send_button_{profile_url.split('/')[-1]}")
+            return False
         
-        await send_button.click()
-        await asyncio.sleep(random.uniform(2, 4))
+        logging.info("Clicking 'Send' button")
+        send_button.click()
         
-        print(f"Message sent successfully to {profile_url}")
+        time.sleep(random.uniform(2, 4))
+        
+        logging.info(f"Message sent successfully to {profile_url}")
         return True
     except Exception as e:
-        print(f"Error sending message to {profile_url}: {str(e)}")
-        await take_screenshot(page, f"error_{profile_url.split('/')[-1]}")
+        logging.error(f"Error sending message to {profile_url}: {str(e)}")
+        take_screenshot(page, f"error_{profile_url.split('/')[-1]}")
         return False
 
-async def main(email, password, messages_list, contacts):
-    async with async_playwright() as p:
-        browser = await p.chromium.launch(headless=True)
-        context = await browser.new_context()
-        page = await context.new_page()
+def send_linkedin_dms(cookies, messages_list, contacts):
+    success = []
+    failed = []
 
+    with sync_playwright() as p:
         try:
-            if not await login_linkedin(page, email, password):
-                return None
-
-            success = []
-            failed = []
+            browser = p.chromium.launch(channel='chrome', headless=True)  # Set to True for production
+            context = browser.new_context()
+            
+            # Load cookies
+            context.add_cookies(json.loads(cookies))
+            
+            page = context.new_page()
+            page.goto("https://www.linkedin.com/feed/")
+            
+            if not check_login(page):
+                return [], contacts
 
             for contact in contacts:
                 message = random.choice(messages_list)
-                if await send_message(page, contact, message):
+                if send_message(page, contact, message):
                     success.append(contact)
                 else:
                     failed.append(contact)
                 
-                await asyncio.sleep(random.uniform(30, 60))  # Longer delay between messages
+                time.sleep(random.uniform(30, 60))  # Longer delay between messages
 
         except Exception as e:
-            print(f"An unexpected error occurred: {str(e)}")
-            await take_screenshot(page, "unexpected_error")
+            logging.error(f"An unexpected error occurred: {str(e)}")
+            failed.extend([c for c in contacts if c not in success and c not in failed])
         finally:
-            await browser.close()
-        
-        return success, failed
+            if 'browser' in locals():
+                browser.close()
+    
+    return success, failed
 
 if __name__ == "__main__":
-    print("This script should be imported and not run directly.")
+    # This section is for testing purposes
+    with open('linkedin_cookies.json', 'r') as f:
+        test_cookies = f.read()
+    
+    test_messages = ["Hello! This is a test message."]
+    test_contacts = ["https://www.linkedin.com/in/example-profile"]
+    
+    success, failed = send_linkedin_dms(test_cookies, test_messages, test_contacts)
+    print(f"Success: {success}")
+    print(f"Failed: {failed}")

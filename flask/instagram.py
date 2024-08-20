@@ -1,9 +1,7 @@
-import json
-import random
-import time
-
 from playwright.sync_api import sync_playwright
-
+import random
+import json
+import time
 
 def send_instagram_dms(messages_list, cookies, usernames, proxy):
     success = []
@@ -14,7 +12,7 @@ def send_instagram_dms(messages_list, cookies, usernames, proxy):
         browser_args = []
 
         if proxy:
-            browser_args.append(f"--proxy-server={proxy}")
+            browser_args.append(f'--proxy-server={proxy}')
 
         print("Launching browser...")
         browser = browser_type.launch(
@@ -23,12 +21,12 @@ def send_instagram_dms(messages_list, cookies, usernames, proxy):
                 "dom.webdriver.enabled": False,
                 "useAutomationExtension": False,
             },
-            args=browser_args,
+            args=browser_args
         )
 
         context = browser.new_context(
-            viewport={"width": 1920, "height": 1080},
-            user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:90.0) Gecko/20100101 Firefox/90.0",
+            viewport={'width': 1920, 'height': 1080},
+            user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:90.0) Gecko/20100101 Firefox/90.0'
         )
 
         print("Adding cookies to browser context...")
@@ -44,20 +42,20 @@ def send_instagram_dms(messages_list, cookies, usernames, proxy):
         page.keyboard.press("Enter")
         time.sleep(2)
 
-        page.goto("https://www.instagram.com/direct/")
+        page.goto('https://www.instagram.com/direct/')
 
         for username in usernames:
             try:
                 time.sleep(random.uniform(3, 4))
                 message = random.choice(messages_list)
                 personalized_message = message.replace("{username}", username)
-
-                div_selector = ".x6s0dn4.x78zum5.xdt5ytf.xl56j7k"
+                
+                div_selector = '.x6s0dn4.x78zum5.xdt5ytf.xl56j7k'
                 div_element = page.query_selector(div_selector)
                 div_element.click()
                 time.sleep(random.uniform(4, 5))
                 page.keyboard.type(username)
-
+                
                 selector = f"span.x1lliihq.x1plvlek.xryxfnj:has-text('{username}')"
                 page.wait_for_selector(selector, state="visible", timeout=10000)
                 time.sleep(random.uniform(1, 2))
@@ -84,7 +82,7 @@ def send_instagram_dms(messages_list, cookies, usernames, proxy):
             except Exception as e:
                 print(f"Unable to message {username}, moving on...")
                 failed.append(username)
-                page.goto("https://www.instagram.com/direct/")
+                page.goto('https://www.instagram.com/direct/')
 
         browser.close()
 

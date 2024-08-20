@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create New Session</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto p-4">
+        <h1 class="text-3xl font-bold mb-4">Create New Session</h1>
+        <form action="{{ url_for('create_session') }}" method="post" class="space-y-4">
+            <div>
+                <label for="platform" class="block">Platform:</label>
+                <select name="platform" id="platform" class="w-full p-2 border rounded">
+                    <option value="instagram">Instagram</option>
+                    <option value="linkedin">LinkedIn</option>
+                    <option value="twitter">Twitter</option>
+                    <option value="tiktok">TikTok</option>
+                </select>
+            </div>
+            <div>
+                <label for="proxy" class="block">Proxy (optional):</label>
+                <input type="text" name="proxy" id="proxy" class="w-full p-2 border rounded">
+            </div>
+            <div>
+                <label for="usernames" class="block">Usernames (one per line):</label>
+                <textarea name="usernames" id="usernames" rows="4" class="w-full p-2 border rounded"></textarea>
+            </div>
+            <div id="messages">
+                <label class="block">Messages:</label>
+                <input type="text" name="message" class="w-full p-2 border rounded mb-2">
+            </div>
+            <button type="button" onclick="addMessage()" class="bg-blue-500 text-white px-4 py-2 rounded">Add Message</button>
+            <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded">Create Session</button>
+        </form>
+    </div>
+    <script>
+        function addMessage() {
+            const messagesDiv = document.getElementById('messages');
+            const newInput = document.createElement('input');
+            newInput.type = 'text';
+            newInput.name = 'message';
+            newInput.className = 'w-full p-2 border rounded mb-2';
+            messagesDiv.appendChild(newInput);
+        }
+    </script>
+</body>
+</html>
