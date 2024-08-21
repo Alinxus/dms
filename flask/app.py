@@ -12,13 +12,14 @@ from facebook import send_facebook_dms
 from send_linkedin import send_linkedin_dms
 
 app = Flask(__name__)
+app.run(host='0.0.0.0')
 app.config['SECRET_KEY'] = os.urandom(24)
-socketio = SocketIO(app, logger=False, engineio_logger=False)
+socketio = SocketIO(app, logger=True, engineio_logger=False)
 
 # Disable Flask logging
 log = logging.getLogger('werkzeug')
-log.disabled = True
-app.logger.disabled = True
+log.disabled = False
+app.logger.disabled = False
 
 sessions = {}
 
@@ -135,4 +136,4 @@ def handle_disconnect():
     pass
 
 if __name__ == "__main__":
-    socketio.run(app, debug=False)
+    socketio.run(app, debug=True)
