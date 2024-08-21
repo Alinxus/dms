@@ -2,3 +2,4 @@ playwright
 flask
 gspread
 flask_socketio
+gunicorn
