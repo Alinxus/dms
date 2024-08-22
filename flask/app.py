@@ -135,8 +135,10 @@ def handle_disconnect():
     pass
 
 if __name__ == "__main__":
-    host = os.environ.get('HOST', '127.0.0.1')
-    port = int(os.environ.get('PORT', 5000))
-    debug = os.environ.get('DEBUG', 'False').lower() == 'true'
+   is_production = os.environ.get('FLASK_ENV') == 'production'
+   host = '0.0.0.0' if is_production else '127.0.0.1'
+   port = int(os.environ.get('PORT', 5000))
+   debug = not is_production
 
-    socketio.run(app, host=host, port=port, debug=debug)
+   logger.info(f"Starting app on {host}:{port} with debug={debug}")
+   socketio.run(app, host=host, port=port, debug=debug)
