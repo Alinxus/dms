@@ -12,6 +12,7 @@ from facebook import send_facebook_dms
 from send_linkedin import send_linkedin_dms
 
 app = Flask(__name__)
+app.run(host='0.0.0.0')
 app.config['SECRET_KEY'] = os.urandom(24)
 socketio = SocketIO(app, logger=True, engineio_logger=False)
 
@@ -136,7 +137,6 @@ def handle_disconnect():
 
 if __name__ == "__main__":
    is_production = os.environ.get('FLASK_ENV') == 'production'
-   host = '0.0.0.0'
    port = int(os.environ.get('PORT', 5000))
    debug = not is_production
 
