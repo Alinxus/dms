@@ -140,5 +140,5 @@ if __name__ == "__main__":
    port = int(os.environ.get('PORT', 5000))
    debug = not is_production
 
-   logger.info(f"Starting app on {host}:{port} with debug={debug}")
+   print(f"Starting app on {host}:{port} with debug={debug}")
    socketio.run(app, host=host, port=port, debug=debug)

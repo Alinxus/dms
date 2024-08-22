@@ -1,0 +1,13 @@
+[Unit]
+Description=Gunicorn instance to serve Flask SocketIO application
+After=network.target
+
+[Service]
+User=ubuntu
+Group=www-data
+WorkingDirectory=/home/ubuntu/dms/flask
+Environment="PATH=/home/ubuntu/dms/flask/venv/venv/bin"
+ExecStart=/home/ubuntu/dms/flask/venv/bin/gunicorn --workers 1 --worker-class eventlet --bind 0.0.0.0:5000 wsgi:app
+
+[Install]
+WantedBy=multi-user.target
