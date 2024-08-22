@@ -18,8 +18,8 @@ socketio = SocketIO(app, logger=True, engineio_logger=False)
 
 # Disable Flask logging
 log = logging.getLogger('werkzeug')
-log.disabled = False
-app.logger.disabled = False
+log.disabled = True
+app.logger.disabled = True
 
 sessions = {}
 
@@ -136,4 +136,8 @@ def handle_disconnect():
     pass
 
 if __name__ == "__main__":
-    socketio.run(app, debug=True)
+    host = os.environ.get('HOST', '127.0.0.1')
+    port = int(os.environ.get('PORT', 5000))
+    debug = os.environ.get('DEBUG', 'False').lower() == 'true'
+
+    socketio.run(app, host=host, port=port, debug=debug)
