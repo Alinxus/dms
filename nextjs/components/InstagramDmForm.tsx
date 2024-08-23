@@ -79,7 +79,7 @@ export default function InstagramDMForm() {
         </div>
         <div>
           <label htmlFor="messages" className="block text-sm font-medium text-gray-700">
-            Messages (one per line)
+            Messages (one per line. as many as you want)
           </label>
           <textarea
             id="messages"
